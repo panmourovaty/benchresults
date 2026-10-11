@@ -1,0 +1,2506 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Linux filesystem space benchmark</title>
+<style>
+:root{color-scheme:light dark;font-family:system-ui,sans-serif;line-height:1.55}
+body{max-width:1500px;margin:40px auto;padding:0 24px} h1{margin-bottom:4px} h2{margin-top:36px}
+.muted{opacity:.75} .scroll{overflow:auto;border:1px solid #8885;border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:right;padding:12px;border-bottom:1px solid #8884;white-space:nowrap}
+th{cursor:pointer;background:#8881}th:first-child,td:first-child{text-align:left}
+tr:hover{background:#8881}.ok{color:#25934e}.error{color:#d15d43}
+details{border:1px solid #8885;padding:12px;margin:12px 0;border-radius:8px}summary{cursor:pointer}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}code{background:#8882;padding:2px 4px}
+.cards{display:flex;flex-wrap:wrap;gap:16px;margin:24px 0}.card{border:1px solid #8885;border-radius:8px;padding:16px;min-width:180px}
+.card strong{display:block;font-size:24px} li{margin:8px 0} a{color:inherit}
+</style>
+<h1>Linux filesystem space benchmark</h1>
+<p class="muted">Generated 2026-10-11T20:41:47+00:00 · complete · click column headings to sort</p>
+<div class="cards"><div class="card">Virtual disk<strong>93.13 GiB</strong>100,000,000,000 bytes</div>
+<div class="card">Shared dataset<strong>77.75 GiB</strong>2,052 source files</div>
+<div class="card">Mode<strong>full</strong>10 runs recorded</div></div>
+<h2>Usable capacity and overhead</h2>
+<div class="scroll"><table><thead><tr><th>Filesystem / configuration</th><th>Status</th><th>Empty usable space</th>
+<th>Empty reserved space</th><th>Logical data stored</th><th>Final available</th><th>Non-file overhead (est.)</th>
+<th>Btrfs metadata used</th><th>Files stored</th><th>Stop reason</th></tr></thead><tbody><tr><td><a href="#run-0">EXT4 (default)</a></td><td class="ok">OK</td><td title="92,812,017,664 bytes" data-value="92812017664">86.44 GiB</td><td title="5,016,776,704 bytes" data-value="5016776704">4.67 GiB</td><td title="92,804,357,376 bytes" data-value="92804357376">86.43 GiB</td><td title="0 bytes" data-value="0">0 B</td><td title="2,171,394,048 bytes" data-value="2171394048">2.02 GiB</td><td title="Unavailable" data-value="-1">—</td><td>3,789</td><td>available-space limit</td></tr><tr><td><a href="#run-1">XFS (default)</a></td><td class="ok">OK</td><td title="97,985,552,384 bytes" data-value="97985552384">91.26 GiB</td><td title="0 bytes" data-value="0">0 B</td><td title="97,975,588,506 bytes" data-value="97975588506">91.25 GiB</td><td title="40,960 bytes" data-value="40960">40.00 KiB</td><td title="2,016,811,008 bytes" data-value="2016811008">1.88 GiB</td><td title="Unavailable" data-value="-1">—</td><td>3,868</td><td>ENOSPC</td></tr><tr><td><a href="#run-2">Btrfs (default)</a></td><td class="ok">OK</td><td title="97,834,631,168 bytes" data-value="97834631168">91.12 GiB</td><td title="2,159,009,792 bytes" data-value="2159009792">2.01 GiB</td><td title="97,834,417,213 bytes" data-value="97834417213">91.12 GiB</td><td title="0 bytes" data-value="0">0 B</td><td title="301,312,000 bytes" data-value="301312000">287.35 MiB</td><td title="208,994,304 bytes" data-value="208994304">199.31 MiB</td><td>4,305</td><td>ENOSPC</td></tr><tr><td><a href="#run-3">Btrfs (zstd:3)</a></td><td class="ok">OK</td><td title="97,834,631,168 bytes" data-value="97834631168">91.12 GiB</td><td title="2,159,009,792 bytes" data-value="2159009792">2.01 GiB</td><td title="98,094,464,061 bytes" data-value="98094464061">91.36 GiB</td><td title="0 bytes" data-value="0">0 B</td><td title="301,871,891 bytes" data-value="301871891">287.89 MiB</td><td title="203,685,888 bytes" data-value="203685888">194.25 MiB</td><td>4,553</td><td>ENOSPC</td></tr><tr><td><a href="#run-4">F2FS (default)</a></td><td class="ok">OK</td><td title="99,075,743,744 bytes" data-value="99075743744">92.27 GiB</td><td title="0 bytes" data-value="0">0 B</td><td title="98,967,739,453 bytes" data-value="98967739453">92.17 GiB</td><td title="0 bytes" data-value="0">0 B</td><td title="933,837,824 bytes" data-value="933837824">890.58 MiB</td><td title="Unavailable" data-value="-1">—</td><td>3,828</td><td>available-space limit</td></tr><tr><td><a href="#run-5">F2FS (zstd, released blocks)</a></td><td class="ok">OK</td><td title="99,075,743,744 bytes" data-value="99075743744">92.27 GiB</td><td title="0 bytes" data-value="0">0 B</td><td title="99,179,688,706 bytes" data-value="99179688706">92.37 GiB</td><td title="0 bytes" data-value="0">0 B</td><td title="940,283,904 bytes" data-value="940283904">896.72 MiB</td><td title="Unavailable" data-value="-1">—</td><td>3,829</td><td>ENOSPC</td></tr><tr><td><a href="#run-6">NTFS (default)</a></td><td class="ok">OK</td><td title="99,929,374,720 bytes" data-value="99929374720">93.07 GiB</td><td title="0 bytes" data-value="0">0 B</td><td title="99,918,990,397 bytes" data-value="99918990397">93.06 GiB</td><td title="0 bytes" data-value="0">0 B</td><td title="75,280,896 bytes" data-value="75280896">71.79 MiB</td><td title="Unavailable" data-value="-1">—</td><td>3,828</td><td>available-space limit</td></tr><tr><td><a href="#run-7">NTFS (LZNT1)</a></td><td class="ok">OK</td><td title="99,929,374,720 bytes" data-value="99929374720">93.07 GiB</td><td title="0 bytes" data-value="0">0 B</td><td title="100,173,950,013 bytes" data-value="100173950013">93.29 GiB</td><td title="20,480 bytes" data-value="20480">20.00 KiB</td><td title="78,938,624 bytes" data-value="78938624">75.28 MiB</td><td title="Unavailable" data-value="-1">—</td><td>6,528</td><td>ENOSPC</td></tr><tr><td>exFAT (default)</td><td class="error">error</td><td colspan="8">[Errno 22] Invalid argument: &#x27;/run/media/testbench/bench/fsbench-7vr72y2r/mount/payload/pass-000000/vids/Video_2026-06-27_20-35-01 (14:58.2 - 15:48.3).mkv&#x27;</td></tr><tr><td><a href="#run-9">XFS (reflink=0, rmapbt=0, parent=0)</a></td><td class="ok">OK</td><td title="99,799,531,520 bytes" data-value="99799531520">92.95 GiB</td><td title="0 bytes" data-value="0">0 B</td><td title="99,789,399,706 bytes" data-value="99789399706">92.94 GiB</td><td title="208,896 bytes" data-value="208896">204.00 KiB</td><td title="202,831,872 bytes" data-value="202831872">193.44 MiB</td><td title="Unavailable" data-value="-1">—</td><td>3,870</td><td>ENOSPC</td></tr></tbody></table></div>
+<h2>Identical dataset: allocation and compression</h2>
+<div class="scroll"><table><thead><tr><th>Filesystem / configuration</th><th>Logical data</th><th>File data allocation</th>
+<th>Non-file overhead (est.)</th><th>Extent / released savings</th><th>Net saved vs baseline</th><th>Read-back</th>
+<th>Write MiB/s</th></tr></thead><tbody><tr><td>EXT4 (default)</td><td title="83,480,168,323 bytes" data-value="83480168323">77.75 GiB</td><td title="83,484,237,824 bytes" data-value="83484237824">77.75 GiB</td><td title="2,171,308,032 bytes" data-value="2171308032">2.02 GiB</td><td title="Unavailable" data-value="-1">—</td><td title="Unavailable" data-value="-1">—</td><td>BLAKE3 OK</td><td>74.7</td></tr><tr><td>XFS (default)</td><td title="83,480,168,323 bytes" data-value="83480168323">77.75 GiB</td><td title="83,484,192,768 bytes" data-value="83484192768">77.75 GiB</td><td title="2,015,705,088 bytes" data-value="2015705088">1.88 GiB</td><td title="Unavailable" data-value="-1">—</td><td title="Unavailable" data-value="-1">—</td><td>BLAKE3 OK</td><td>77.1</td></tr><tr><td>Btrfs (default)</td><td title="83,480,168,323 bytes" data-value="83480168323">77.75 GiB</td><td title="83,484,192,768 bytes" data-value="83484192768">77.75 GiB</td><td title="256,141,312 bytes" data-value="256141312">244.28 MiB</td><td title="Unavailable" data-value="-1">—</td><td title="Unavailable" data-value="-1">—</td><td>BLAKE3 OK</td><td>75.7</td></tr><tr><td>Btrfs (zstd:3)</td><td title="83,480,168,323 bytes" data-value="83480168323">77.75 GiB</td><td title="83,350,088,159 bytes" data-value="83350088159">77.63 GiB</td><td title="253,840,929 bytes" data-value="253840929">242.08 MiB</td><td title="130,124,288 bytes" data-value="130124288">124.10 MiB</td><td title="136,404,992 bytes" data-value="136404992">130.09 MiB</td><td>BLAKE3 OK</td><td>73.2</td></tr><tr><td>F2FS (default)</td><td title="83,480,168,323 bytes" data-value="83480168323">77.75 GiB</td><td title="83,562,863,616 bytes" data-value="83562863616">77.82 GiB</td><td title="929,393,664 bytes" data-value="929393664">886.34 MiB</td><td title="Unavailable" data-value="-1">—</td><td title="Unavailable" data-value="-1">—</td><td>BLAKE3 OK</td><td>74.8</td></tr><tr><td>F2FS (zstd, released blocks)</td><td title="83,480,168,323 bytes" data-value="83480168323">77.75 GiB</td><td title="83,451,179,008 bytes" data-value="83451179008">77.72 GiB</td><td title="932,845,568 bytes" data-value="932845568">889.63 MiB</td><td title="115,294,208 bytes" data-value="115294208">109.95 MiB</td><td title="108,232,704 bytes" data-value="108232704">103.22 MiB</td><td>BLAKE3 OK</td><td>60.8</td></tr><tr><td>NTFS (default)</td><td title="83,480,168,323 bytes" data-value="83480168323">77.75 GiB</td><td title="83,483,250,688 bytes" data-value="83483250688">77.75 GiB</td><td title="73,140,224 bytes" data-value="73140224">69.75 MiB</td><td title="Unavailable" data-value="-1">—</td><td title="Unavailable" data-value="-1">—</td><td>BLAKE3 OK</td><td>53.6</td></tr><tr><td>NTFS (LZNT1)</td><td title="83,480,168,323 bytes" data-value="83480168323">77.75 GiB</td><td title="83,351,523,328 bytes" data-value="83351523328">77.63 GiB</td><td title="73,242,624 bytes" data-value="73242624">69.85 MiB</td><td title="Unavailable" data-value="-1">—</td><td title="131,624,960 bytes" data-value="131624960">125.53 MiB</td><td>BLAKE3 OK</td><td>49.3</td></tr><tr><td>XFS (reflink=0, rmapbt=0, parent=0)</td><td title="83,480,168,323 bytes" data-value="83480168323">77.75 GiB</td><td title="83,484,192,768 bytes" data-value="83484192768">77.75 GiB</td><td title="201,725,952 bytes" data-value="201725952">192.38 MiB</td><td title="Unavailable" data-value="-1">—</td><td title="Unavailable" data-value="-1">—</td><td>BLAKE3 OK</td><td>75.5</td></tr></tbody></table></div>
+<h2>How to read the measurements</h2>
+<ul>
+<li><b>Empty usable space</b> is <code>f_bavail × f_frsize</code> after format and sync. Reserved space is
+<code>(f_bfree − f_bavail) × f_frsize</code>; EXT4's default 5% reserve is reported separately from metadata.</li>
+<li><b>Logical data stored</b> is the actual sum of file lengths after the capacity fill. The writer respects
+ordinary-user available space even when run as root. ENOSPC, inode exhaustion, metadata constraints and final file
+size can stop a fill with free blocks remaining. This is workload-dependent capacity, not a universal maximum.
+A logical-limit stop is a lower bound; sample mode does not measure capacity.</li>
+<li><b>Non-file overhead estimate</b> is image size minus <code>f_bfree × f_frsize</code> minus reported file data allocation.
+It includes journals, filesystem structures excluded from statvfs, directories, inline file data, allocator accounting
+and other metadata. It excludes ordinary-user reserved free blocks. Filesystems account differently; this is not an
+exact cross-filesystem metadata counter. Negative or unavailable estimates are omitted.</li>
+<li><b>Btrfs metadata used</b> comes from <code>btrfs filesystem df --raw</code>, with DUP multiplied by two.
+Allocated-but-unused metadata chunks, system blocks, profiles and full usage output are in run details.
+This counter can include inline file content.</li>
+<li><b>File data allocation</b> normally sums <code>st_blocks × 512</code> for regular files; allocation slack and
+inline data affect it. Compressed Btrfs uses <code>compsize -b</code>, since <code>st_blocks</code> can misrepresent
+compressed extent size. No reflinks, hardlinks, sparse copies or deduplication are used.</li>
+<li><b>Extent / released savings</b> uses Btrfs's uncompressed extent size minus physical extent size, or F2FS's
+compression blocks released by ioctl. Other unavailable counters display a dash.
+F2FS files become non-writable after releasing their reserved compression blocks.</li>
+<li><b>Net saved vs baseline</b> compares the reduction in free bytes for the exact same dataset in the uncompressed
+and compressed runs. It includes changes in metadata and rounding, so can be negative. NTFS compression uses
+NTFS-3G with LZNT1 and a marked parent directory. Capacity-stage compression values are not compared across
+different amounts of logical data.</li>
+<li><b>Raw image host allocation</b> in details is the backing file's <code>st_blocks</code>, which depends on the host
+filesystem (including its compression or CoW). It is not the guest filesystem's overhead.
+Write rates include per-file fsync and F2FS release ioctls; this is a space benchmark, not a device speed benchmark.</li>
+</ul>
+<h2>Run details and command output</h2><details id="run-0"><summary>EXT4 (default) — ok (2072.6 s)</summary><ul></ul><pre>{
+  &quot;variant&quot;: {
+    &quot;filesystem&quot;: &quot;ext4&quot;,
+    &quot;compression&quot;: false,
+    &quot;driver&quot;: &quot;ext4&quot;
+  },
+  &quot;label&quot;: &quot;EXT4 (default)&quot;,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;warnings&quot;: [],
+  &quot;format_seconds&quot;: 0.4765088540000306,
+  &quot;empty&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 97828827136,
+      &quot;free_bytes&quot;: 97828794368,
+      &quot;available_bytes&quot;: 92812017664,
+      &quot;used_bytes&quot;: 32768,
+      &quot;reserved_bytes&quot;: 5016776704,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 6111232,
+      &quot;inodes_free&quot;: 6111220
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 0,
+      &quot;allocated_bytes&quot;: 0,
+      &quot;files&quot;: 0,
+      &quot;directories&quot;: 0,
+      &quot;directory_allocated_bytes&quot;: 0
+    },
+    &quot;image_allocated_bytes&quot;: 2106773504,
+    &quot;unaddressable_bytes&quot;: 2171172864,
+    &quot;native&quot;: {},
+    &quot;warnings&quot;: [],
+    &quot;file_data_bytes&quot;: 0,
+    &quot;non_file_overhead_estimate_bytes&quot;: 2171205632
+  },
+  &quot;format_info&quot;: &quot;tune2fs 1.47.4 (6-Mar-2025)\nFilesystem volume name:   &lt;none&gt;\nLast mounted on:          &lt;not available&gt;\nFilesystem UUID:          f7ecfc6e-662c-4c91-b0f2-6d0c392f53a8\nFilesystem magic number:  0xEF53\nFilesystem revision #:    1 (dynamic)\nFilesystem features:      has_journal ext_attr resize_inode dir_index orphan_file filetype needs_recovery extent 64bit flex_bg metadata_csum_seed sparse_super large_file huge_file dir_nlink extra_isize metadata_csum orphan_present\nFilesystem flags:         signed_directory_hash \nDefault mount options:    user_xattr acl\nFilesystem state:         clean\nErrors behavior:          Continue\nFilesystem OS type:       Linux\nInode count:              6111232\nBlock count:              24414062\nReserved block count:     1220703\nOverhead clusters:        530071\nFree blocks:              23883983\nFree inodes:              6111220\nFirst block:              0\nBlock size:               4096\nFragment size:            4096\nGroup descriptor size:    64\nReserved GDT blocks:      1024\nBlocks per group:         32768\nFragments per group:      32768\nInodes per group:         8192\nInode blocks per group:   512\nFlex block group size:    16\nFilesystem created:       Sun Oct 11 15:10:08 2026\nLast mount time:          Sun Oct 11 15:10:09 2026\nLast write time:          Sun Oct 11 15:10:09 2026\nMount count:              1\nMaximum mount count:      -1\nLast checked:             Sun Oct 11 15:10:08 2026\nCheck interval:           0 (&lt;none&gt;)\nLifetime writes:          4384 kB\nReserved blocks uid:      0 (user root)\nReserved blocks gid:      0 (group root)\nFirst inode:              11\nInode size:               256\nRequired extra isize:     32\nDesired extra isize:      32\nJournal inode:            8\nDefault directory hash:   half_md4\nDirectory Hash Seed:      06f78b13-1056-4dee-8145-3493d19db13e\nJournal backup:           inode blocks\nChecksum type:            crc32c\nChecksum:                 0xf416f0c1\nChecksum seed:            0xe90a40ec\nOrphan file inode:        12\n&quot;,
+  &quot;reference_write_seconds&quot;: 1065.0729023039999,
+  &quot;reference&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 97828827136,
+      &quot;free_bytes&quot;: 14344454144,
+      &quot;available_bytes&quot;: 9327677440,
+      &quot;used_bytes&quot;: 83484372992,
+      &quot;reserved_bytes&quot;: 5016776704,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 6111232,
+      &quot;inodes_free&quot;: 6109143
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 83480168323,
+      &quot;allocated_bytes&quot;: 83484237824,
+      &quot;files&quot;: 2052,
+      &quot;directories&quot;: 25,
+      &quot;directory_allocated_bytes&quot;: 102400
+    },
+    &quot;image_allocated_bytes&quot;: 85593624576,
+    &quot;unaddressable_bytes&quot;: 2171172864,
+    &quot;native&quot;: {},
+    &quot;warnings&quot;: [],
+    &quot;file_data_bytes&quot;: 83484237824,
+    &quot;non_file_overhead_estimate_bytes&quot;: 2171308032,
+    &quot;f2fs_released_bytes&quot;: 0
+  },
+  &quot;reference_verified&quot;: true,
+  &quot;capacity_write_seconds&quot;: 270.52932362,
+  &quot;stop_reason&quot;: &quot;available-space limit&quot;,
+  &quot;final&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 97828827136,
+      &quot;free_bytes&quot;: 5016772608,
+      &quot;available_bytes&quot;: 0,
+      &quot;used_bytes&quot;: 92812054528,
+      &quot;reserved_bytes&quot;: 5016772608,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 6111232,
+      &quot;inodes_free&quot;: 6107385
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 92804357376,
+      &quot;allocated_bytes&quot;: 92811833344,
+      &quot;files&quot;: 3789,
+      &quot;directories&quot;: 46,
+      &quot;directory_allocated_bytes&quot;: 188416
+    },
+    &quot;image_allocated_bytes&quot;: 94921588736,
+    &quot;unaddressable_bytes&quot;: 2171172864,
+    &quot;native&quot;: {},
+    &quot;warnings&quot;: [],
+    &quot;file_data_bytes&quot;: 92811833344,
+    &quot;non_file_overhead_estimate_bytes&quot;: 2171394048,
+    &quot;f2fs_released_bytes&quot;: 0
+  },
+  &quot;completed_passes&quot;: 1,
+  &quot;seconds&quot;: 2072.6255257390003,
+  &quot;commands&quot;: [
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--find&quot;,
+        &quot;--show&quot;,
+        &quot;/run/media/testbench/bench/fsbench-v35b84n7/disk.raw&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;/dev/loop22\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.09615413500000614
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--json&quot;,
+        &quot;--list&quot;,
+        &quot;--output&quot;,
+        &quot;NAME,BACK-FILE&quot;,
+        &quot;/dev/loop22&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;{\n   \&quot;loopdevices\&quot;: [\n      {\n         \&quot;name\&quot;: \&quot;/dev/loop22\&quot;,\n         \&quot;back-file\&quot;: \&quot;/run/media/testbench/bench/fsbench-v35b84n7/disk.raw\&quot;\n      }\n   ]\n}\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0037270899999839457
+    },
+    {
+      &quot;command&quot;: [
+        &quot;mkfs.ext4&quot;,
+        &quot;-F&quot;,
+        &quot;-m&quot;,
+        &quot;5.0&quot;,
+        &quot;-E&quot;,
+        &quot;nodiscard,lazy_itable_init=0,lazy_journal_init=0&quot;,
+        &quot;/dev/loop22&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;Creating filesystem with 24414062 4k blocks and 6111232 inodes\nFilesystem UUID: f7ecfc6e-662c-4c91-b0f2-6d0c392f53a8\nSuperblock backups stored on blocks: \n\t32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208, \n\t4096000, 7962624, 11239424, 20480000, 23887872\n\nAllocating group tables:   0/746\b\b\b\b\b\b\b       \b\b\b\b\b\b\bdone                            \nWriting inode tables:   0/746\b\b\b\b\b\b\b       \b\b\b\b\b\b\bdone                            \nCreating journal (131072 blocks): done\nWriting superblocks and filesystem accounting information:   0/746\b\b\b\b\b\b\b       \b\b\b\b\b\b\bdone\n\n&quot;,
+      &quot;stderr&quot;: &quot;mke2fs 1.47.4 (6-Mar-2025)\n&quot;,
+      &quot;seconds&quot;: 0.47639859800000295
+    },
+    {
+      &quot;command&quot;: [
+        &quot;mount&quot;,
+        &quot;-t&quot;,
+        &quot;ext4&quot;,
+        &quot;-o&quot;,
+        &quot;rw,noatime,nodev,nosuid,noexec&quot;,
+        &quot;/dev/loop22&quot;,
+        &quot;/run/media/testbench/bench/fsbench-v35b84n7/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.06648090799995998
+    },
+    {
+      &quot;command&quot;: [
+        &quot;tune2fs&quot;,
+        &quot;-l&quot;,
+        &quot;/dev/loop22&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;tune2fs 1.47.4 (6-Mar-2025)\nFilesystem volume name:   &lt;none&gt;\nLast mounted on:          &lt;not available&gt;\nFilesystem UUID:          f7ecfc6e-662c-4c91-b0f2-6d0c392f53a8\nFilesystem magic number:  0xEF53\nFilesystem revision #:    1 (dynamic)\nFilesystem features:      has_journal ext_attr resize_inode dir_index orphan_file filetype needs_recovery extent 64bit flex_bg metadata_csum_seed sparse_super large_file huge_file dir_nlink extra_isize metadata_csum orphan_present\nFilesystem flags:         signed_directory_hash \nDefault mount options:    user_xattr acl\nFilesystem state:         clean\nErrors behavior:          Continue\nFilesystem OS type:       Linux\nInode count:              6111232\nBlock count:              24414062\nReserved block count:     1220703\nOverhead clusters:        530071\nFree blocks:              23883983\nFree inodes:              6111220\nFirst block:              0\nBlock size:               4096\nFragment size:            4096\nGroup descriptor size:    64\nReserved GDT blocks:      1024\nBlocks per group:         32768\nFragments per group:      32768\nInodes per group:         8192\nInode blocks per group:   512\nFlex block group size:    16\nFilesystem created:       Sun Oct 11 15:10:08 2026\nLast mount time:          Sun Oct 11 15:10:09 2026\nLast write time:          Sun Oct 11 15:10:09 2026\nMount count:              1\nMaximum mount count:      -1\nLast checked:             Sun Oct 11 15:10:08 2026\nCheck interval:           0 (&lt;none&gt;)\nLifetime writes:          4384 kB\nReserved blocks uid:      0 (user root)\nReserved blocks gid:      0 (group root)\nFirst inode:              11\nInode size:               256\nRequired extra isize:     32\nDesired extra isize:      32\nJournal inode:            8\nDefault directory hash:   half_md4\nDirectory Hash Seed:      06f78b13-1056-4dee-8145-3493d19db13e\nJournal backup:           inode blocks\nChecksum type:            crc32c\nChecksum:                 0xf416f0c1\nChecksum seed:            0xe90a40ec\nOrphan file inode:        12\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.00283396200001107
+    },
+    {
+      &quot;command&quot;: [
+        &quot;umount&quot;,
+        &quot;/run/media/testbench/bench/fsbench-v35b84n7/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.8521633309997014
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--associated&quot;,
+        &quot;/run/media/testbench/bench/fsbench-v35b84n7/disk.raw&quot;,
+        &quot;--noheadings&quot;,
+        &quot;--output&quot;,
+        &quot;NAME&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;/dev/loop22\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0076666160002787365
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--detach&quot;,
+        &quot;/dev/loop22&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0034432110001034744
+    }
+  ]
+}</pre></details><details id="run-1"><summary>XFS (default) — ok (2117.8 s)</summary><ul></ul><pre>{
+  &quot;variant&quot;: {
+    &quot;filesystem&quot;: &quot;xfs&quot;,
+    &quot;compression&quot;: false,
+    &quot;driver&quot;: &quot;xfs&quot;
+  },
+  &quot;label&quot;: &quot;XFS (default)&quot;,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;warnings&quot;: [],
+  &quot;format_seconds&quot;: 0.05528474299990194,
+  &quot;empty&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99932889088,
+      &quot;free_bytes&quot;: 97985552384,
+      &quot;available_bytes&quot;: 97985552384,
+      &quot;used_bytes&quot;: 1947336704,
+      &quot;reserved_bytes&quot;: 0,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 48828096,
+      &quot;inodes_free&quot;: 48828093
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 0,
+      &quot;allocated_bytes&quot;: 0,
+      &quot;files&quot;: 0,
+      &quot;directories&quot;: 0,
+      &quot;directory_allocated_bytes&quot;: 0
+    },
+    &quot;image_allocated_bytes&quot;: 67461120,
+    &quot;unaddressable_bytes&quot;: 67110912,
+    &quot;native&quot;: {},
+    &quot;warnings&quot;: [],
+    &quot;file_data_bytes&quot;: 0,
+    &quot;non_file_overhead_estimate_bytes&quot;: 2014447616
+  },
+  &quot;format_info&quot;: &quot;meta-data=/dev/loop22            isize=512    agcount=4, agsize=6103516 blks\n         =                       sectsz=512   attr=2, projid32bit=1\n         =                       crc=1        finobt=1, sparse=1, rmapbt=1\n         =                       reflink=1    bigtime=1 inobtcount=1 nrext64=1\n         =                       exchange=1   metadir=0\ndata     =                       bsize=4096   blocks=24414062, imaxpct=25\n         =                       sunit=0      swidth=0 blks\nnaming   =version 2              bsize=4096   ascii-ci=0, ftype=1, parent=1\nlog      =internal log           bsize=4096   blocks=16384, version=2\n         =                       sectsz=512   sunit=0 blks, lazy-count=1\nrealtime =none                   extsz=4096   blocks=0, rtextents=0\n         =                       rgcount=0    rgsize=0 extents\n         =                       zoned=0      start=0 reserved=0\n&quot;,
+  &quot;reference_write_seconds&quot;: 1033.165676487,
+  &quot;reference&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99932889088,
+      &quot;free_bytes&quot;: 14500102144,
+      &quot;available_bytes&quot;: 14500102144,
+      &quot;used_bytes&quot;: 85432786944,
+      &quot;reserved_bytes&quot;: 0,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 28322688,
+      &quot;inodes_free&quot;: 28320608
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 83480168323,
+      &quot;allocated_bytes&quot;: 83484192768,
+      &quot;files&quot;: 2052,
+      &quot;directories&quot;: 25,
+      &quot;directory_allocated_bytes&quot;: 176128
+    },
+    &quot;image_allocated_bytes&quot;: 83552841728,
+    &quot;unaddressable_bytes&quot;: 67110912,
+    &quot;native&quot;: {},
+    &quot;warnings&quot;: [],
+    &quot;file_data_bytes&quot;: 83484192768,
+    &quot;non_file_overhead_estimate_bytes&quot;: 2015705088,
+    &quot;f2fs_released_bytes&quot;: 0
+  },
+  &quot;reference_verified&quot;: true,
+  &quot;capacity_write_seconds&quot;: 320.58255360600015,
+  &quot;stop_reason&quot;: &quot;ENOSPC&quot;,
+  &quot;final&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99932889088,
+      &quot;free_bytes&quot;: 40960,
+      &quot;available_bytes&quot;: 40960,
+      &quot;used_bytes&quot;: 99932848128,
+      &quot;reserved_bytes&quot;: 0,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 4112,
+      &quot;inodes_free&quot;: 194
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 97975588506,
+      &quot;allocated_bytes&quot;: 97983148032,
+      &quot;files&quot;: 3868,
+      &quot;directories&quot;: 47,
+      &quot;directory_allocated_bytes&quot;: 331776
+    },
+    &quot;image_allocated_bytes&quot;: 98053017600,
+    &quot;unaddressable_bytes&quot;: 67110912,
+    &quot;native&quot;: {},
+    &quot;warnings&quot;: [],
+    &quot;file_data_bytes&quot;: 97983148032,
+    &quot;non_file_overhead_estimate_bytes&quot;: 2016811008,
+    &quot;f2fs_released_bytes&quot;: 0
+  },
+  &quot;completed_passes&quot;: 1,
+  &quot;seconds&quot;: 2117.788315435,
+  &quot;commands&quot;: [
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--find&quot;,
+        &quot;--show&quot;,
+        &quot;/run/media/testbench/bench/fsbench-4ak42k3j/disk.raw&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;/dev/loop22\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.032680614999662794
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--json&quot;,
+        &quot;--list&quot;,
+        &quot;--output&quot;,
+        &quot;NAME,BACK-FILE&quot;,
+        &quot;/dev/loop22&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;{\n   \&quot;loopdevices\&quot;: [\n      {\n         \&quot;name\&quot;: \&quot;/dev/loop22\&quot;,\n         \&quot;back-file\&quot;: \&quot;/run/media/testbench/bench/fsbench-4ak42k3j/disk.raw\&quot;\n      }\n   ]\n}\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0011772279999604507
+    },
+    {
+      &quot;command&quot;: [
+        &quot;mkfs.xfs&quot;,
+        &quot;-f&quot;,
+        &quot;-K&quot;,
+        &quot;/dev/loop22&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;meta-data=/dev/loop22            isize=512    agcount=4, agsize=6103516 blks\n         =                       sectsz=512   attr=2, projid32bit=1\n         =                       crc=1        finobt=1, sparse=1, rmapbt=1\n         =                       reflink=1    bigtime=1 inobtcount=1 nrext64=1\n         =                       exchange=1   metadir=0\ndata     =                       bsize=4096   blocks=24414062, imaxpct=25\n         =                       sunit=0      swidth=0 blks\nnaming   =version 2              bsize=4096   ascii-ci=0, ftype=1, parent=1\nlog      =internal log           bsize=4096   blocks=16384, version=2\n         =                       sectsz=512   sunit=0 blks, lazy-count=1\nrealtime =none                   extsz=4096   blocks=0, rtextents=0\n         =                       rgcount=0    rgsize=0 extents\n         =                       zoned=0      start=0 reserved=0\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.05524242800038337
+    },
+    {
+      &quot;command&quot;: [
+        &quot;mount&quot;,
+        &quot;-t&quot;,
+        &quot;xfs&quot;,
+        &quot;-o&quot;,
+        &quot;rw,noatime,nodev,nosuid,noexec&quot;,
+        &quot;/dev/loop22&quot;,
+        &quot;/run/media/testbench/bench/fsbench-4ak42k3j/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.005609645999811619
+    },
+    {
+      &quot;command&quot;: [
+        &quot;xfs_info&quot;,
+        &quot;/run/media/testbench/bench/fsbench-4ak42k3j/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;meta-data=/dev/loop22            isize=512    agcount=4, agsize=6103516 blks\n         =                       sectsz=512   attr=2, projid32bit=1\n         =                       crc=1        finobt=1, sparse=1, rmapbt=1\n         =                       reflink=1    bigtime=1 inobtcount=1 nrext64=1\n         =                       exchange=1   metadir=0\ndata     =                       bsize=4096   blocks=24414062, imaxpct=25\n         =                       sunit=0      swidth=0 blks\nnaming   =version 2              bsize=4096   ascii-ci=0, ftype=1, parent=1\nlog      =internal log           bsize=4096   blocks=16384, version=2\n         =                       sectsz=512   sunit=0 blks, lazy-count=1\nrealtime =none                   extsz=4096   blocks=0, rtextents=0\n         =                       rgcount=0    rgsize=0 extents\n         =                       zoned=0      start=0 reserved=0\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.015979161000359454
+    },
+    {
+      &quot;command&quot;: [
+        &quot;umount&quot;,
+        &quot;/run/media/testbench/bench/fsbench-4ak42k3j/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.32884138299959886
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--associated&quot;,
+        &quot;/run/media/testbench/bench/fsbench-4ak42k3j/disk.raw&quot;,
+        &quot;--noheadings&quot;,
+        &quot;--output&quot;,
+        &quot;NAME&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;/dev/loop22\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.006941940000615432
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--detach&quot;,
+        &quot;/dev/loop22&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.003714287000548211
+    }
+  ]
+}</pre></details><details id="run-2"><summary>Btrfs (default) — ok (2213.9 s)</summary><ul></ul><pre>{
+  &quot;variant&quot;: {
+    &quot;filesystem&quot;: &quot;btrfs&quot;,
+    &quot;compression&quot;: false,
+    &quot;driver&quot;: &quot;btrfs&quot;
+  },
+  &quot;label&quot;: &quot;Btrfs (default)&quot;,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;warnings&quot;: [],
+  &quot;format_seconds&quot;: 0.9332440539992604,
+  &quot;empty&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99999997952,
+      &quot;free_bytes&quot;: 99993640960,
+      &quot;available_bytes&quot;: 97834631168,
+      &quot;used_bytes&quot;: 6356992,
+      &quot;reserved_bytes&quot;: 2159009792,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 0,
+      &quot;inodes_free&quot;: 0
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 0,
+      &quot;allocated_bytes&quot;: 0,
+      &quot;files&quot;: 0,
+      &quot;directories&quot;: 0,
+      &quot;directory_allocated_bytes&quot;: 0
+    },
+    &quot;image_allocated_bytes&quot;: 4878336,
+    &quot;unaddressable_bytes&quot;: 2048,
+    &quot;native&quot;: {
+      &quot;btrfs_df&quot;: &quot;Data, single: total=8388608, used=0\nSystem, DUP: total=8388608, used=16384\nMetadata, DUP: total=1073741824, used=147456\nGlobalReserve, single: total=6029312, used=0\n&quot;,
+      &quot;btrfs_usage&quot;: &quot;Overall:\n    Device size:\t\t       99999997952\n    Device allocated:\t\t        2172649472\n    Device unallocated:\t\t       97827348480\n    Device missing:\t\t                 0\n    Device slack:\t\t              2048\n    Used:\t\t\t            327680\n    Free (estimated):\t\t       97835737088\t(min: 48922062848)\n    Free (statfs, df):\t\t       97834631168\n    Data ratio:\t\t\t              1.00\n    Metadata ratio:\t\t              2.00\n    Global reserve:\t\t           6029312\t(used: 0)\n    Multiple profiles:\t\t                no\n\nData,single: Size:8388608, Used:0 (0.00%)\n   /dev/loop22\t   8388608\n\nMetadata,DUP: Size:1073741824, Used:147456 (0.01%)\n   /dev/loop22\t2147483648\n\nSystem,DUP: Size:8388608, Used:16384 (0.20%)\n   /dev/loop22\t  16777216\n\nUnallocated:\n   /dev/loop22\t97827348480\n&quot;
+    },
+    &quot;warnings&quot;: [],
+    &quot;btrfs&quot;: {
+      &quot;metadata_used_physical_bytes&quot;: 294912,
+      &quot;metadata_allocated_physical_bytes&quot;: 2147483648,
+      &quot;system_used_physical_bytes&quot;: 32768,
+      &quot;data_used_physical_bytes&quot;: 0,
+      &quot;groups&quot;: [
+        {
+          &quot;type&quot;: &quot;Data&quot;,
+          &quot;profile&quot;: &quot;single&quot;,
+          &quot;allocated&quot;: 8388608,
+          &quot;used&quot;: 0
+        },
+        {
+          &quot;type&quot;: &quot;System&quot;,
+          &quot;profile&quot;: &quot;DUP&quot;,
+          &quot;allocated&quot;: 8388608,
+          &quot;used&quot;: 16384
+        },
+        {
+          &quot;type&quot;: &quot;Metadata&quot;,
+          &quot;profile&quot;: &quot;DUP&quot;,
+          &quot;allocated&quot;: 1073741824,
+          &quot;used&quot;: 147456
+        }
+      ]
+    },
+    &quot;file_data_bytes&quot;: 0,
+    &quot;non_file_overhead_estimate_bytes&quot;: 6359040
+  },
+  &quot;reference_write_seconds&quot;: 1051.2077899080004,
+  &quot;reference&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99999997952,
+      &quot;free_bytes&quot;: 16259665920,
+      &quot;available_bytes&quot;: 14354362368,
+      &quot;used_bytes&quot;: 83740332032,
+      &quot;reserved_bytes&quot;: 1905303552,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 0,
+      &quot;inodes_free&quot;: 0
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 83480168323,
+      &quot;allocated_bytes&quot;: 83484192768,
+      &quot;files&quot;: 2052,
+      &quot;directories&quot;: 25,
+      &quot;directory_allocated_bytes&quot;: 0
+    },
+    &quot;image_allocated_bytes&quot;: 83912081408,
+    &quot;unaddressable_bytes&quot;: 2048,
+    &quot;native&quot;: {
+      &quot;btrfs_df&quot;: &quot;Data, single: total=86981476352, used=83480268800\nSystem, DUP: total=8388608, used=16384\nMetadata, DUP: total=1073741824, used=87769088\nGlobalReserve, single: total=84492288, used=0\n&quot;,
+      &quot;btrfs_usage&quot;: &quot;Overall:\n    Device size:\t\t       99999997952\n    Device allocated:\t\t       89145737216\n    Device unallocated:\t\t       10854260736\n    Device missing:\t\t                 0\n    Device slack:\t\t              2048\n    Used:\t\t\t       83655839744\n    Free (estimated):\t\t       14355468288\t(min: 8928337920)\n    Free (statfs, df):\t\t       14354362368\n    Data ratio:\t\t\t              1.00\n    Metadata ratio:\t\t              2.00\n    Global reserve:\t\t          84492288\t(used: 0)\n    Multiple profiles:\t\t                no\n\nData,single: Size:86981476352, Used:83480268800 (95.97%)\n   /dev/loop22\t86981476352\n\nMetadata,DUP: Size:1073741824, Used:87769088 (8.17%)\n   /dev/loop22\t2147483648\n\nSystem,DUP: Size:8388608, Used:16384 (0.20%)\n   /dev/loop22\t  16777216\n\nUnallocated:\n   /dev/loop22\t10854260736\n&quot;,
+      &quot;compsize&quot;: &quot;Processed 2052 files, 8002 regular extents (8002 refs), 958 inline.\nType       Perc     Disk Usage   Uncompressed Referenced  \nTOTAL      100%     83481298242  83481298242  83481298242 \nnone       100%     83481298242  83481298242  83481298242 \n&quot;
+    },
+    &quot;warnings&quot;: [],
+    &quot;btrfs&quot;: {
+      &quot;metadata_used_physical_bytes&quot;: 175538176,
+      &quot;metadata_allocated_physical_bytes&quot;: 2147483648,
+      &quot;system_used_physical_bytes&quot;: 32768,
+      &quot;data_used_physical_bytes&quot;: 83480268800,
+      &quot;groups&quot;: [
+        {
+          &quot;type&quot;: &quot;Data&quot;,
+          &quot;profile&quot;: &quot;single&quot;,
+          &quot;allocated&quot;: 86981476352,
+          &quot;used&quot;: 83480268800
+        },
+        {
+          &quot;type&quot;: &quot;System&quot;,
+          &quot;profile&quot;: &quot;DUP&quot;,
+          &quot;allocated&quot;: 8388608,
+          &quot;used&quot;: 16384
+        },
+        {
+          &quot;type&quot;: &quot;Metadata&quot;,
+          &quot;profile&quot;: &quot;DUP&quot;,
+          &quot;allocated&quot;: 1073741824,
+          &quot;used&quot;: 87769088
+        }
+      ]
+    },
+    &quot;compression&quot;: {
+      &quot;disk_bytes&quot;: 83481298242,
+      &quot;uncompressed_extent_bytes&quot;: 83481298242,
+      &quot;referenced_bytes&quot;: 83481298242,
+      &quot;saved_bytes&quot;: 0,
+      &quot;saving_percent&quot;: 0.0
+    },
+    &quot;file_data_bytes&quot;: 83484192768,
+    &quot;non_file_overhead_estimate_bytes&quot;: 256141312,
+    &quot;f2fs_released_bytes&quot;: 0
+  },
+  &quot;reference_verified&quot;: true,
+  &quot;capacity_write_seconds&quot;: 353.91937895200044,
+  &quot;stop_reason&quot;: &quot;ENOSPC&quot;,
+  &quot;final&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99999997952,
+      &quot;free_bytes&quot;: 1856790528,
+      &quot;available_bytes&quot;: 0,
+      &quot;used_bytes&quot;: 98143207424,
+      &quot;reserved_bytes&quot;: 1856790528,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 0,
+      &quot;inodes_free&quot;: 0
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 97834417213,
+      &quot;allocated_bytes&quot;: 97841897472,
+      &quot;files&quot;: 4305,
+      &quot;directories&quot;: 48,
+      &quot;directory_allocated_bytes&quot;: 0
+    },
+    &quot;image_allocated_bytes&quot;: 98588020736,
+    &quot;unaddressable_bytes&quot;: 2048,
+    &quot;native&quot;: {
+      &quot;btrfs_df&quot;: &quot;Data, single: total=97834631168, used=97834631168\nSystem, DUP: total=8388608, used=16384\nMetadata, DUP: total=1073741824, used=104497152\nGlobalReserve, single: total=99549184, used=0\n&quot;,
+      &quot;btrfs_usage&quot;: &quot;Overall:\n    Device size:\t\t       99999997952\n    Device allocated:\t\t       99998892032\n    Device unallocated:\t\t           1105920\n    Device missing:\t\t                 0\n    Device slack:\t\t              2048\n    Used:\t\t\t       98043658240\n    Free (estimated):\t\t                 0\t(min: 0)\n    Free (statfs, df):\t\t                 0\n    Data ratio:\t\t\t              1.00\n    Metadata ratio:\t\t              2.00\n    Global reserve:\t\t          99549184\t(used: 0)\n    Multiple profiles:\t\t                no\n\nData,single: Size:97834631168, Used:97834631168 (100.00%)\n   /dev/loop22\t97834631168\n\nMetadata,DUP: Size:1073741824, Used:104497152 (9.73%)\n   /dev/loop22\t2147483648\n\nSystem,DUP: Size:8388608, Used:16384 (0.20%)\n   /dev/loop22\t  16777216\n\nUnallocated:\n   /dev/loop22\t   1105920\n&quot;,
+      &quot;compsize&quot;: &quot;Processed 4305 files, 9635 regular extents (9635 refs), 1774 inline.\nType       Perc     Disk Usage   Uncompressed Referenced  \nTOTAL      100%     97836529039  97836529039  97836529039 \nnone       100%     97836529039  97836529039  97836529039 \n&quot;
+    },
+    &quot;warnings&quot;: [],
+    &quot;btrfs&quot;: {
+      &quot;metadata_used_physical_bytes&quot;: 208994304,
+      &quot;metadata_allocated_physical_bytes&quot;: 2147483648,
+      &quot;system_used_physical_bytes&quot;: 32768,
+      &quot;data_used_physical_bytes&quot;: 97834631168,
+      &quot;groups&quot;: [
+        {
+          &quot;type&quot;: &quot;Data&quot;,
+          &quot;profile&quot;: &quot;single&quot;,
+          &quot;allocated&quot;: 97834631168,
+          &quot;used&quot;: 97834631168
+        },
+        {
+          &quot;type&quot;: &quot;System&quot;,
+          &quot;profile&quot;: &quot;DUP&quot;,
+          &quot;allocated&quot;: 8388608,
+          &quot;used&quot;: 16384
+        },
+        {
+          &quot;type&quot;: &quot;Metadata&quot;,
+          &quot;profile&quot;: &quot;DUP&quot;,
+          &quot;allocated&quot;: 1073741824,
+          &quot;used&quot;: 104497152
+        }
+      ]
+    },
+    &quot;compression&quot;: {
+      &quot;disk_bytes&quot;: 97836529039,
+      &quot;uncompressed_extent_bytes&quot;: 97836529039,
+      &quot;referenced_bytes&quot;: 97836529039,
+      &quot;saved_bytes&quot;: 0,
+      &quot;saving_percent&quot;: 0.0
+    },
+    &quot;file_data_bytes&quot;: 97841897472,
+    &quot;non_file_overhead_estimate_bytes&quot;: 301312000,
+    &quot;f2fs_released_bytes&quot;: 0
+  },
+  &quot;completed_passes&quot;: 1,
+  &quot;seconds&quot;: 2213.9055583609997,
+  &quot;commands&quot;: [
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--find&quot;,
+        &quot;--show&quot;,
+        &quot;/run/media/testbench/bench/fsbench-5z6zvaub/disk.raw&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;/dev/loop22\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.03017624799940677
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--json&quot;,
+        &quot;--list&quot;,
+        &quot;--output&quot;,
+        &quot;NAME,BACK-FILE&quot;,
+        &quot;/dev/loop22&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;{\n   \&quot;loopdevices\&quot;: [\n      {\n         \&quot;name\&quot;: \&quot;/dev/loop22\&quot;,\n         \&quot;back-file\&quot;: \&quot;/run/media/testbench/bench/fsbench-5z6zvaub/disk.raw\&quot;\n      }\n   ]\n}\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.001020047999190865
+    },
+    {
+      &quot;command&quot;: [
+        &quot;mkfs.btrfs&quot;,
+        &quot;-f&quot;,
+        &quot;-K&quot;,
+        &quot;/dev/loop22&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;btrfs-progs v7.1\nSee https://btrfs.readthedocs.io for more information.\n\nNOTE: default settings have changed in version 6.19 (supported since linux 6.1):\n      - enable block-group-tree (-O bgt)\n\nLabel:              (null)\nUUID:               38b0b341-c6ea-4ae9-9059-63f9cb75387a\nNode size:          16384\nSector size:        4096\t(CPU page size: 4096)\nFilesystem size:    93.13GiB\nBlock group profiles:\n  Data:             single            8.00MiB\n  Metadata:         DUP               1.00GiB\n  System:           DUP               8.00MiB\nSSD detected:       no\nZoned device:       no\nFeatures:           extref, skinny-metadata, no-holes, free-space-tree, block-group-tree\nChecksum:           crc32c\nNumber of devices:  1\nDevices:\n   ID        SIZE  PATH       \n    1    93.13GiB  /dev/loop22\n\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.9331938080003965
+    },
+    {
+      &quot;command&quot;: [
+        &quot;mount&quot;,
+        &quot;-t&quot;,
+        &quot;btrfs&quot;,
+        &quot;-o&quot;,
+        &quot;rw,noatime,nodev,nosuid,noexec,nodiscard,compress=no&quot;,
+        &quot;/dev/loop22&quot;,
+        &quot;/run/media/testbench/bench/fsbench-5z6zvaub/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.003651136999906157
+    },
+    {
+      &quot;command&quot;: [
+        &quot;btrfs&quot;,
+        &quot;filesystem&quot;,
+        &quot;df&quot;,
+        &quot;--raw&quot;,
+        &quot;/run/media/testbench/bench/fsbench-5z6zvaub/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;Data, single: total=8388608, used=0\nSystem, DUP: total=8388608, used=16384\nMetadata, DUP: total=1073741824, used=147456\nGlobalReserve, single: total=6029312, used=0\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.005652801999531221
+    },
+    {
+      &quot;command&quot;: [
+        &quot;btrfs&quot;,
+        &quot;filesystem&quot;,
+        &quot;usage&quot;,
+        &quot;--raw&quot;,
+        &quot;/run/media/testbench/bench/fsbench-5z6zvaub/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;Overall:\n    Device size:\t\t       99999997952\n    Device allocated:\t\t        2172649472\n    Device unallocated:\t\t       97827348480\n    Device missing:\t\t                 0\n    Device slack:\t\t              2048\n    Used:\t\t\t            327680\n    Free (estimated):\t\t       97835737088\t(min: 48922062848)\n    Free (statfs, df):\t\t       97834631168\n    Data ratio:\t\t\t              1.00\n    Metadata ratio:\t\t              2.00\n    Global reserve:\t\t           6029312\t(used: 0)\n    Multiple profiles:\t\t                no\n\nData,single: Size:8388608, Used:0 (0.00%)\n   /dev/loop22\t   8388608\n\nMetadata,DUP: Size:1073741824, Used:147456 (0.01%)\n   /dev/loop22\t2147483648\n\nSystem,DUP: Size:8388608, Used:16384 (0.20%)\n   /dev/loop22\t  16777216\n\nUnallocated:\n   /dev/loop22\t97827348480\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0034553579998828354
+    },
+    {
+      &quot;command&quot;: [
+        &quot;btrfs&quot;,
+        &quot;filesystem&quot;,
+        &quot;df&quot;,
+        &quot;--raw&quot;,
+        &quot;/run/media/testbench/bench/fsbench-5z6zvaub/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;Data, single: total=86981476352, used=83480268800\nSystem, DUP: total=8388608, used=16384\nMetadata, DUP: total=1073741824, used=87769088\nGlobalReserve, single: total=84492288, used=0\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.009487176000220643
+    },
+    {
+      &quot;command&quot;: [
+        &quot;btrfs&quot;,
+        &quot;filesystem&quot;,
+        &quot;usage&quot;,
+        &quot;--raw&quot;,
+        &quot;/run/media/testbench/bench/fsbench-5z6zvaub/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;Overall:\n    Device size:\t\t       99999997952\n    Device allocated:\t\t       89145737216\n    Device unallocated:\t\t       10854260736\n    Device missing:\t\t                 0\n    Device slack:\t\t              2048\n    Used:\t\t\t       83655839744\n    Free (estimated):\t\t       14355468288\t(min: 8928337920)\n    Free (statfs, df):\t\t       14354362368\n    Data ratio:\t\t\t              1.00\n    Metadata ratio:\t\t              2.00\n    Global reserve:\t\t          84492288\t(used: 0)\n    Multiple profiles:\t\t                no\n\nData,single: Size:86981476352, Used:83480268800 (95.97%)\n   /dev/loop22\t86981476352\n\nMetadata,DUP: Size:1073741824, Used:87769088 (8.17%)\n   /dev/loop22\t2147483648\n\nSystem,DUP: Size:8388608, Used:16384 (0.20%)\n   /dev/loop22\t  16777216\n\nUnallocated:\n   /dev/loop22\t10854260736\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.005054719000327168
+    },
+    {
+      &quot;command&quot;: [
+        &quot;compsize&quot;,
+        &quot;-b&quot;,
+        &quot;/run/media/testbench/bench/fsbench-5z6zvaub/mount/payload&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;Processed 2052 files, 8002 regular extents (8002 refs), 958 inline.\nType       Perc     Disk Usage   Uncompressed Referenced  \nTOTAL      100%     83481298242  83481298242  83481298242 \nnone       100%     83481298242  83481298242  83481298242 \n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.17812083999979222
+    },
+    {
+      &quot;command&quot;: [
+        &quot;btrfs&quot;,
+        &quot;filesystem&quot;,
+        &quot;df&quot;,
+        &quot;--raw&quot;,
+        &quot;/run/media/testbench/bench/fsbench-5z6zvaub/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;Data, single: total=97834631168, used=97834631168\nSystem, DUP: total=8388608, used=16384\nMetadata, DUP: total=1073741824, used=104497152\nGlobalReserve, single: total=99549184, used=0\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.049095027000475966
+    },
+    {
+      &quot;command&quot;: [
+        &quot;btrfs&quot;,
+        &quot;filesystem&quot;,
+        &quot;usage&quot;,
+        &quot;--raw&quot;,
+        &quot;/run/media/testbench/bench/fsbench-5z6zvaub/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;Overall:\n    Device size:\t\t       99999997952\n    Device allocated:\t\t       99998892032\n    Device unallocated:\t\t           1105920\n    Device missing:\t\t                 0\n    Device slack:\t\t              2048\n    Used:\t\t\t       98043658240\n    Free (estimated):\t\t                 0\t(min: 0)\n    Free (statfs, df):\t\t                 0\n    Data ratio:\t\t\t              1.00\n    Metadata ratio:\t\t              2.00\n    Global reserve:\t\t          99549184\t(used: 0)\n    Multiple profiles:\t\t                no\n\nData,single: Size:97834631168, Used:97834631168 (100.00%)\n   /dev/loop22\t97834631168\n\nMetadata,DUP: Size:1073741824, Used:104497152 (9.73%)\n   /dev/loop22\t2147483648\n\nSystem,DUP: Size:8388608, Used:16384 (0.20%)\n   /dev/loop22\t  16777216\n\nUnallocated:\n   /dev/loop22\t   1105920\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.002560642999924312
+    },
+    {
+      &quot;command&quot;: [
+        &quot;compsize&quot;,
+        &quot;-b&quot;,
+        &quot;/run/media/testbench/bench/fsbench-5z6zvaub/mount/payload&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;Processed 4305 files, 9635 regular extents (9635 refs), 1774 inline.\nType       Perc     Disk Usage   Uncompressed Referenced  \nTOTAL      100%     97836529039  97836529039  97836529039 \nnone       100%     97836529039  97836529039  97836529039 \n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0769749179999053
+    },
+    {
+      &quot;command&quot;: [
+        &quot;umount&quot;,
+        &quot;/run/media/testbench/bench/fsbench-5z6zvaub/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0542517769999904
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--associated&quot;,
+        &quot;/run/media/testbench/bench/fsbench-5z6zvaub/disk.raw&quot;,
+        &quot;--noheadings&quot;,
+        &quot;--output&quot;,
+        &quot;NAME&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;/dev/loop22\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0017755409999153926
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--detach&quot;,
+        &quot;/dev/loop22&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0008226239997384255
+    }
+  ]
+}</pre></details><details id="run-3"><summary>Btrfs (zstd:3) — ok (2309.1 s)</summary><ul></ul><pre>{
+  &quot;variant&quot;: {
+    &quot;filesystem&quot;: &quot;btrfs&quot;,
+    &quot;compression&quot;: true,
+    &quot;driver&quot;: &quot;btrfs&quot;
+  },
+  &quot;label&quot;: &quot;Btrfs (zstd:3)&quot;,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;warnings&quot;: [],
+  &quot;format_seconds&quot;: 0.7251340329994491,
+  &quot;empty&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99999997952,
+      &quot;free_bytes&quot;: 99993640960,
+      &quot;available_bytes&quot;: 97834631168,
+      &quot;used_bytes&quot;: 6356992,
+      &quot;reserved_bytes&quot;: 2159009792,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 0,
+      &quot;inodes_free&quot;: 0
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 0,
+      &quot;allocated_bytes&quot;: 0,
+      &quot;files&quot;: 0,
+      &quot;directories&quot;: 0,
+      &quot;directory_allocated_bytes&quot;: 0
+    },
+    &quot;image_allocated_bytes&quot;: 4878336,
+    &quot;unaddressable_bytes&quot;: 2048,
+    &quot;native&quot;: {
+      &quot;btrfs_df&quot;: &quot;Data, single: total=8388608, used=0\nSystem, DUP: total=8388608, used=16384\nMetadata, DUP: total=1073741824, used=147456\nGlobalReserve, single: total=6029312, used=0\n&quot;,
+      &quot;btrfs_usage&quot;: &quot;Overall:\n    Device size:\t\t       99999997952\n    Device allocated:\t\t        2172649472\n    Device unallocated:\t\t       97827348480\n    Device missing:\t\t                 0\n    Device slack:\t\t              2048\n    Used:\t\t\t            327680\n    Free (estimated):\t\t       97835737088\t(min: 48922062848)\n    Free (statfs, df):\t\t       97834631168\n    Data ratio:\t\t\t              1.00\n    Metadata ratio:\t\t              2.00\n    Global reserve:\t\t           6029312\t(used: 0)\n    Multiple profiles:\t\t                no\n\nData,single: Size:8388608, Used:0 (0.00%)\n   /dev/loop22\t   8388608\n\nMetadata,DUP: Size:1073741824, Used:147456 (0.01%)\n   /dev/loop22\t2147483648\n\nSystem,DUP: Size:8388608, Used:16384 (0.20%)\n   /dev/loop22\t  16777216\n\nUnallocated:\n   /dev/loop22\t97827348480\n&quot;
+    },
+    &quot;warnings&quot;: [],
+    &quot;btrfs&quot;: {
+      &quot;metadata_used_physical_bytes&quot;: 294912,
+      &quot;metadata_allocated_physical_bytes&quot;: 2147483648,
+      &quot;system_used_physical_bytes&quot;: 32768,
+      &quot;data_used_physical_bytes&quot;: 0,
+      &quot;groups&quot;: [
+        {
+          &quot;type&quot;: &quot;Data&quot;,
+          &quot;profile&quot;: &quot;single&quot;,
+          &quot;allocated&quot;: 8388608,
+          &quot;used&quot;: 0
+        },
+        {
+          &quot;type&quot;: &quot;System&quot;,
+          &quot;profile&quot;: &quot;DUP&quot;,
+          &quot;allocated&quot;: 8388608,
+          &quot;used&quot;: 16384
+        },
+        {
+          &quot;type&quot;: &quot;Metadata&quot;,
+          &quot;profile&quot;: &quot;DUP&quot;,
+          &quot;allocated&quot;: 1073741824,
+          &quot;used&quot;: 147456
+        }
+      ]
+    },
+    &quot;file_data_bytes&quot;: null,
+    &quot;non_file_overhead_estimate_bytes&quot;: null
+  },
+  &quot;reference_write_seconds&quot;: 1088.1621065059999,
+  &quot;reference&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99999997952,
+      &quot;free_bytes&quot;: 16396070912,
+      &quot;available_bytes&quot;: 14484721664,
+      &quot;used_bytes&quot;: 83603927040,
+      &quot;reserved_bytes&quot;: 1911349248,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 0,
+      &quot;inodes_free&quot;: 0
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 83480168323,
+      &quot;allocated_bytes&quot;: 83484192768,
+      &quot;files&quot;: 2052,
+      &quot;directories&quot;: 25,
+      &quot;directory_allocated_bytes&quot;: 0
+    },
+    &quot;image_allocated_bytes&quot;: 83760377856,
+    &quot;unaddressable_bytes&quot;: 2048,
+    &quot;native&quot;: {
+      &quot;btrfs_df&quot;: &quot;Data, single: total=85907734528, used=83349909504\nSystem, DUP: total=8388608, used=16384\nMetadata, DUP: total=1073741824, used=85524480\nGlobalReserve, single: total=82935808, used=0\n&quot;,
+      &quot;btrfs_usage&quot;: &quot;Overall:\n    Device size:\t\t       99999997952\n    Device allocated:\t\t       88071995392\n    Device unallocated:\t\t       11928002560\n    Device missing:\t\t                 0\n    Device slack:\t\t              2048\n    Used:\t\t\t       83520991232\n    Free (estimated):\t\t       14485827584\t(min: 8521826304)\n    Free (statfs, df):\t\t       14484721664\n    Data ratio:\t\t\t              1.00\n    Metadata ratio:\t\t              2.00\n    Global reserve:\t\t          82935808\t(used: 0)\n    Multiple profiles:\t\t                no\n\nData,single: Size:85907734528, Used:83349909504 (97.02%)\n   /dev/loop22\t85907734528\n\nMetadata,DUP: Size:1073741824, Used:85524480 (7.97%)\n   /dev/loop22\t2147483648\n\nSystem,DUP: Size:8388608, Used:16384 (0.20%)\n   /dev/loop22\t  16777216\n\nUnallocated:\n   /dev/loop22\t11928002560\n&quot;,
+      &quot;compsize&quot;: &quot;Processed 2052 files, 5373 regular extents (5373 refs), 2000 inline.\nType       Perc     Disk Usage   Uncompressed Referenced  \nTOTAL       99%     83350088159  83480212447  83480212447 \nnone       100%     83345638239  83345638239  83345638239 \nzstd         3%     4449920      134574208    134574208   \n&quot;
+    },
+    &quot;warnings&quot;: [],
+    &quot;btrfs&quot;: {
+      &quot;metadata_used_physical_bytes&quot;: 171048960,
+      &quot;metadata_allocated_physical_bytes&quot;: 2147483648,
+      &quot;system_used_physical_bytes&quot;: 32768,
+      &quot;data_used_physical_bytes&quot;: 83349909504,
+      &quot;groups&quot;: [
+        {
+          &quot;type&quot;: &quot;Data&quot;,
+          &quot;profile&quot;: &quot;single&quot;,
+          &quot;allocated&quot;: 85907734528,
+          &quot;used&quot;: 83349909504
+        },
+        {
+          &quot;type&quot;: &quot;System&quot;,
+          &quot;profile&quot;: &quot;DUP&quot;,
+          &quot;allocated&quot;: 8388608,
+          &quot;used&quot;: 16384
+        },
+        {
+          &quot;type&quot;: &quot;Metadata&quot;,
+          &quot;profile&quot;: &quot;DUP&quot;,
+          &quot;allocated&quot;: 1073741824,
+          &quot;used&quot;: 85524480
+        }
+      ]
+    },
+    &quot;compression&quot;: {
+      &quot;disk_bytes&quot;: 83350088159,
+      &quot;uncompressed_extent_bytes&quot;: 83480212447,
+      &quot;referenced_bytes&quot;: 83480212447,
+      &quot;saved_bytes&quot;: 130124288,
+      &quot;saving_percent&quot;: 0.15587440925909357
+    },
+    &quot;file_data_bytes&quot;: 83350088159,
+    &quot;non_file_overhead_estimate_bytes&quot;: 253840929,
+    &quot;f2fs_released_bytes&quot;: 0
+  },
+  &quot;reference_verified&quot;: true,
+  &quot;capacity_write_seconds&quot;: 364.70524662000025,
+  &quot;stop_reason&quot;: &quot;ENOSPC&quot;,
+  &quot;final&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99999997952,
+      &quot;free_bytes&quot;: 1863163904,
+      &quot;available_bytes&quot;: 0,
+      &quot;used_bytes&quot;: 98136834048,
+      &quot;reserved_bytes&quot;: 1863163904,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 0,
+      &quot;inodes_free&quot;: 0
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 98094464061,
+      &quot;allocated_bytes&quot;: 98101944320,
+      &quot;files&quot;: 4553,
+      &quot;directories&quot;: 48,
+      &quot;directory_allocated_bytes&quot;: 0
+    },
+    &quot;image_allocated_bytes&quot;: 98580688896,
+    &quot;unaddressable_bytes&quot;: 2048,
+    &quot;native&quot;: {
+      &quot;btrfs_df&quot;: &quot;Data, single: total=97834631168, used=97834631168\nSystem, DUP: total=8388608, used=16384\nMetadata, DUP: total=1073741824, used=101842944\nGlobalReserve, single: total=98484224, used=0\n&quot;,
+      &quot;btrfs_usage&quot;: &quot;Overall:\n    Device size:\t\t       99999997952\n    Device allocated:\t\t       99998892032\n    Device unallocated:\t\t           1105920\n    Device missing:\t\t                 0\n    Device slack:\t\t              2048\n    Used:\t\t\t       98038349824\n    Free (estimated):\t\t                 0\t(min: 0)\n    Free (statfs, df):\t\t                 0\n    Data ratio:\t\t\t              1.00\n    Metadata ratio:\t\t              2.00\n    Global reserve:\t\t          98484224\t(used: 0)\n    Multiple profiles:\t\t                no\n\nData,single: Size:97834631168, Used:97834631168 (100.00%)\n   /dev/loop22\t97834631168\n\nMetadata,DUP: Size:1073741824, Used:101842944 (9.48%)\n   /dev/loop22\t2147483648\n\nSystem,DUP: Size:8388608, Used:16384 (0.20%)\n   /dev/loop22\t  16777216\n\nUnallocated:\n   /dev/loop22\t   1105920\n&quot;,
+      &quot;compsize&quot;: &quot;Processed 4553 files, 7322 regular extents (7322 refs), 3730 inline.\nType       Perc     Disk Usage   Uncompressed Referenced  \nTOTAL       99%     97834964205  98094535146  98094535146 \nnone       100%     97826297372  97826297372  97826297372 \nzstd         3%     8666833      268237774    268237774   \n&quot;
+    },
+    &quot;warnings&quot;: [],
+    &quot;btrfs&quot;: {
+      &quot;metadata_used_physical_bytes&quot;: 203685888,
+      &quot;metadata_allocated_physical_bytes&quot;: 2147483648,
+      &quot;system_used_physical_bytes&quot;: 32768,
+      &quot;data_used_physical_bytes&quot;: 97834631168,
+      &quot;groups&quot;: [
+        {
+          &quot;type&quot;: &quot;Data&quot;,
+          &quot;profile&quot;: &quot;single&quot;,
+          &quot;allocated&quot;: 97834631168,
+          &quot;used&quot;: 97834631168
+        },
+        {
+          &quot;type&quot;: &quot;System&quot;,
+          &quot;profile&quot;: &quot;DUP&quot;,
+          &quot;allocated&quot;: 8388608,
+          &quot;used&quot;: 16384
+        },
+        {
+          &quot;type&quot;: &quot;Metadata&quot;,
+          &quot;profile&quot;: &quot;DUP&quot;,
+          &quot;allocated&quot;: 1073741824,
+          &quot;used&quot;: 101842944
+        }
+      ]
+    },
+    &quot;compression&quot;: {
+      &quot;disk_bytes&quot;: 97834964205,
+      &quot;uncompressed_extent_bytes&quot;: 98094535146,
+      &quot;referenced_bytes&quot;: 98094535146,
+      &quot;saved_bytes&quot;: 259570941,
+      &quot;saving_percent&quot;: 0.26461304966037824
+    },
+    &quot;file_data_bytes&quot;: 97834964205,
+    &quot;non_file_overhead_estimate_bytes&quot;: 301871891,
+    &quot;f2fs_released_bytes&quot;: 0
+  },
+  &quot;completed_passes&quot;: 1,
+  &quot;seconds&quot;: 2309.0991706230006,
+  &quot;commands&quot;: [
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--find&quot;,
+        &quot;--show&quot;,
+        &quot;/run/media/testbench/bench/fsbench-esp1_1d2/disk.raw&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;/dev/loop22\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.02339830199980497
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--json&quot;,
+        &quot;--list&quot;,
+        &quot;--output&quot;,
+        &quot;NAME,BACK-FILE&quot;,
+        &quot;/dev/loop22&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;{\n   \&quot;loopdevices\&quot;: [\n      {\n         \&quot;name\&quot;: \&quot;/dev/loop22\&quot;,\n         \&quot;back-file\&quot;: \&quot;/run/media/testbench/bench/fsbench-esp1_1d2/disk.raw\&quot;\n      }\n   ]\n}\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0012752020002153586
+    },
+    {
+      &quot;command&quot;: [
+        &quot;mkfs.btrfs&quot;,
+        &quot;-f&quot;,
+        &quot;-K&quot;,
+        &quot;/dev/loop22&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;btrfs-progs v7.1\nSee https://btrfs.readthedocs.io for more information.\n\nNOTE: default settings have changed in version 6.19 (supported since linux 6.1):\n      - enable block-group-tree (-O bgt)\n\nLabel:              (null)\nUUID:               c6cadc2a-b4ec-4cb6-9896-ca8f80e0d229\nNode size:          16384\nSector size:        4096\t(CPU page size: 4096)\nFilesystem size:    93.13GiB\nBlock group profiles:\n  Data:             single            8.00MiB\n  Metadata:         DUP               1.00GiB\n  System:           DUP               8.00MiB\nSSD detected:       no\nZoned device:       no\nFeatures:           extref, skinny-metadata, no-holes, free-space-tree, block-group-tree\nChecksum:           crc32c\nNumber of devices:  1\nDevices:\n   ID        SIZE  PATH       \n    1    93.13GiB  /dev/loop22\n\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.7250114219996249
+    },
+    {
+      &quot;command&quot;: [
+        &quot;mount&quot;,
+        &quot;-t&quot;,
+        &quot;btrfs&quot;,
+        &quot;-o&quot;,
+        &quot;rw,noatime,nodev,nosuid,noexec,nodiscard,compress=zstd:3&quot;,
+        &quot;/dev/loop22&quot;,
+        &quot;/run/media/testbench/bench/fsbench-esp1_1d2/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.007169847000113805
+    },
+    {
+      &quot;command&quot;: [
+        &quot;btrfs&quot;,
+        &quot;filesystem&quot;,
+        &quot;df&quot;,
+        &quot;--raw&quot;,
+        &quot;/run/media/testbench/bench/fsbench-esp1_1d2/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;Data, single: total=8388608, used=0\nSystem, DUP: total=8388608, used=16384\nMetadata, DUP: total=1073741824, used=147456\nGlobalReserve, single: total=6029312, used=0\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.006641736000347009
+    },
+    {
+      &quot;command&quot;: [
+        &quot;btrfs&quot;,
+        &quot;filesystem&quot;,
+        &quot;usage&quot;,
+        &quot;--raw&quot;,
+        &quot;/run/media/testbench/bench/fsbench-esp1_1d2/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;Overall:\n    Device size:\t\t       99999997952\n    Device allocated:\t\t        2172649472\n    Device unallocated:\t\t       97827348480\n    Device missing:\t\t                 0\n    Device slack:\t\t              2048\n    Used:\t\t\t            327680\n    Free (estimated):\t\t       97835737088\t(min: 48922062848)\n    Free (statfs, df):\t\t       97834631168\n    Data ratio:\t\t\t              1.00\n    Metadata ratio:\t\t              2.00\n    Global reserve:\t\t           6029312\t(used: 0)\n    Multiple profiles:\t\t                no\n\nData,single: Size:8388608, Used:0 (0.00%)\n   /dev/loop22\t   8388608\n\nMetadata,DUP: Size:1073741824, Used:147456 (0.01%)\n   /dev/loop22\t2147483648\n\nSystem,DUP: Size:8388608, Used:16384 (0.20%)\n   /dev/loop22\t  16777216\n\nUnallocated:\n   /dev/loop22\t97827348480\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0012868730000263895
+    },
+    {
+      &quot;command&quot;: [
+        &quot;btrfs&quot;,
+        &quot;filesystem&quot;,
+        &quot;df&quot;,
+        &quot;--raw&quot;,
+        &quot;/run/media/testbench/bench/fsbench-esp1_1d2/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;Data, single: total=85907734528, used=83349909504\nSystem, DUP: total=8388608, used=16384\nMetadata, DUP: total=1073741824, used=85524480\nGlobalReserve, single: total=82935808, used=0\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0038934029998927144
+    },
+    {
+      &quot;command&quot;: [
+        &quot;btrfs&quot;,
+        &quot;filesystem&quot;,
+        &quot;usage&quot;,
+        &quot;--raw&quot;,
+        &quot;/run/media/testbench/bench/fsbench-esp1_1d2/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;Overall:\n    Device size:\t\t       99999997952\n    Device allocated:\t\t       88071995392\n    Device unallocated:\t\t       11928002560\n    Device missing:\t\t                 0\n    Device slack:\t\t              2048\n    Used:\t\t\t       83520991232\n    Free (estimated):\t\t       14485827584\t(min: 8521826304)\n    Free (statfs, df):\t\t       14484721664\n    Data ratio:\t\t\t              1.00\n    Metadata ratio:\t\t              2.00\n    Global reserve:\t\t          82935808\t(used: 0)\n    Multiple profiles:\t\t                no\n\nData,single: Size:85907734528, Used:83349909504 (97.02%)\n   /dev/loop22\t85907734528\n\nMetadata,DUP: Size:1073741824, Used:85524480 (7.97%)\n   /dev/loop22\t2147483648\n\nSystem,DUP: Size:8388608, Used:16384 (0.20%)\n   /dev/loop22\t  16777216\n\nUnallocated:\n   /dev/loop22\t11928002560\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.002213049000602041
+    },
+    {
+      &quot;command&quot;: [
+        &quot;compsize&quot;,
+        &quot;-b&quot;,
+        &quot;/run/media/testbench/bench/fsbench-esp1_1d2/mount/payload&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;Processed 2052 files, 5373 regular extents (5373 refs), 2000 inline.\nType       Perc     Disk Usage   Uncompressed Referenced  \nTOTAL       99%     83350088159  83480212447  83480212447 \nnone       100%     83345638239  83345638239  83345638239 \nzstd         3%     4449920      134574208    134574208   \n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.11482128799980273
+    },
+    {
+      &quot;command&quot;: [
+        &quot;btrfs&quot;,
+        &quot;filesystem&quot;,
+        &quot;df&quot;,
+        &quot;--raw&quot;,
+        &quot;/run/media/testbench/bench/fsbench-esp1_1d2/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;Data, single: total=97834631168, used=97834631168\nSystem, DUP: total=8388608, used=16384\nMetadata, DUP: total=1073741824, used=101842944\nGlobalReserve, single: total=98484224, used=0\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.06355489899942768
+    },
+    {
+      &quot;command&quot;: [
+        &quot;btrfs&quot;,
+        &quot;filesystem&quot;,
+        &quot;usage&quot;,
+        &quot;--raw&quot;,
+        &quot;/run/media/testbench/bench/fsbench-esp1_1d2/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;Overall:\n    Device size:\t\t       99999997952\n    Device allocated:\t\t       99998892032\n    Device unallocated:\t\t           1105920\n    Device missing:\t\t                 0\n    Device slack:\t\t              2048\n    Used:\t\t\t       98038349824\n    Free (estimated):\t\t                 0\t(min: 0)\n    Free (statfs, df):\t\t                 0\n    Data ratio:\t\t\t              1.00\n    Metadata ratio:\t\t              2.00\n    Global reserve:\t\t          98484224\t(used: 0)\n    Multiple profiles:\t\t                no\n\nData,single: Size:97834631168, Used:97834631168 (100.00%)\n   /dev/loop22\t97834631168\n\nMetadata,DUP: Size:1073741824, Used:101842944 (9.48%)\n   /dev/loop22\t2147483648\n\nSystem,DUP: Size:8388608, Used:16384 (0.20%)\n   /dev/loop22\t  16777216\n\nUnallocated:\n   /dev/loop22\t   1105920\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.006201688998771715
+    },
+    {
+      &quot;command&quot;: [
+        &quot;compsize&quot;,
+        &quot;-b&quot;,
+        &quot;/run/media/testbench/bench/fsbench-esp1_1d2/mount/payload&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;Processed 4553 files, 7322 regular extents (7322 refs), 3730 inline.\nType       Perc     Disk Usage   Uncompressed Referenced  \nTOTAL       99%     97834964205  98094535146  98094535146 \nnone       100%     97826297372  97826297372  97826297372 \nzstd         3%     8666833      268237774    268237774   \n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.13917645900073694
+    },
+    {
+      &quot;command&quot;: [
+        &quot;umount&quot;,
+        &quot;/run/media/testbench/bench/fsbench-esp1_1d2/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.13033561500014912
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--associated&quot;,
+        &quot;/run/media/testbench/bench/fsbench-esp1_1d2/disk.raw&quot;,
+        &quot;--noheadings&quot;,
+        &quot;--output&quot;,
+        &quot;NAME&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;/dev/loop22\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0016318100006174063
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--detach&quot;,
+        &quot;/dev/loop22&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0008406739998463308
+    }
+  ],
+  &quot;paired_net_saved_bytes&quot;: 136404992,
+  &quot;paired_net_saved_percent&quot;: 0.16290280251814018,
+  &quot;paired_file_allocation_saved_bytes&quot;: 134104609
+}</pre></details><details id="run-4"><summary>F2FS (default) — ok (2283.9 s)</summary><ul></ul><pre>{
+  &quot;variant&quot;: {
+    &quot;filesystem&quot;: &quot;f2fs&quot;,
+    &quot;compression&quot;: false,
+    &quot;driver&quot;: &quot;f2fs&quot;
+  },
+  &quot;label&quot;: &quot;F2FS (default)&quot;,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;warnings&quot;: [],
+  &quot;format_seconds&quot;: 2.1496493729991926,
+  &quot;empty&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99997900800,
+      &quot;free_bytes&quot;: 99075743744,
+      &quot;available_bytes&quot;: 99075743744,
+      &quot;used_bytes&quot;: 922157056,
+      &quot;reserved_bytes&quot;: 0,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 13511677,
+      &quot;inodes_free&quot;: 13511676
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 0,
+      &quot;allocated_bytes&quot;: 0,
+      &quot;files&quot;: 0,
+      &quot;directories&quot;: 0,
+      &quot;directory_allocated_bytes&quot;: 0
+    },
+    &quot;image_allocated_bytes&quot;: 125894656,
+    &quot;unaddressable_bytes&quot;: 2099200,
+    &quot;native&quot;: {},
+    &quot;warnings&quot;: [],
+    &quot;file_data_bytes&quot;: 0,
+    &quot;non_file_overhead_estimate_bytes&quot;: 924256256
+  },
+  &quot;reference_write_seconds&quot;: 1063.9237788440005,
+  &quot;reference&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99997900800,
+      &quot;free_bytes&quot;: 15507742720,
+      &quot;available_bytes&quot;: 15507742720,
+      &quot;used_bytes&quot;: 84490158080,
+      &quot;reserved_bytes&quot;: 0,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 13511677,
+      &quot;inodes_free&quot;: 3786070
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 83480168323,
+      &quot;allocated_bytes&quot;: 83562863616,
+      &quot;files&quot;: 2052,
+      &quot;directories&quot;: 25,
+      &quot;directory_allocated_bytes&quot;: 99840
+    },
+    &quot;image_allocated_bytes&quot;: 83864612864,
+    &quot;unaddressable_bytes&quot;: 2099200,
+    &quot;native&quot;: {},
+    &quot;warnings&quot;: [],
+    &quot;file_data_bytes&quot;: 83562863616,
+    &quot;non_file_overhead_estimate_bytes&quot;: 929393664,
+    &quot;f2fs_released_bytes&quot;: 0
+  },
+  &quot;reference_verified&quot;: true,
+  &quot;capacity_write_seconds&quot;: 288.8329782619985,
+  &quot;stop_reason&quot;: &quot;available-space limit&quot;,
+  &quot;final&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99997900800,
+      &quot;free_bytes&quot;: 0,
+      &quot;available_bytes&quot;: 0,
+      &quot;used_bytes&quot;: 99997900800,
+      &quot;reserved_bytes&quot;: 0,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 13511677,
+      &quot;inodes_free&quot;: 0
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 98967739453,
+      &quot;allocated_bytes&quot;: 99066162176,
+      &quot;files&quot;: 3828,
+      &quot;directories&quot;: 47,
+      &quot;directory_allocated_bytes&quot;: 187392
+    },
+    &quot;image_allocated_bytes&quot;: 99399188480,
+    &quot;unaddressable_bytes&quot;: 2099200,
+    &quot;native&quot;: {},
+    &quot;warnings&quot;: [],
+    &quot;file_data_bytes&quot;: 99066162176,
+    &quot;non_file_overhead_estimate_bytes&quot;: 933837824,
+    &quot;f2fs_released_bytes&quot;: 0
+  },
+  &quot;completed_passes&quot;: 1,
+  &quot;seconds&quot;: 2283.8713014719997,
+  &quot;commands&quot;: [
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--find&quot;,
+        &quot;--show&quot;,
+        &quot;/run/media/testbench/bench/fsbench-0i3f922p/disk.raw&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;/dev/loop22\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.040281577999849105
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--json&quot;,
+        &quot;--list&quot;,
+        &quot;--output&quot;,
+        &quot;NAME,BACK-FILE&quot;,
+        &quot;/dev/loop22&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;{\n   \&quot;loopdevices\&quot;: [\n      {\n         \&quot;name\&quot;: \&quot;/dev/loop22\&quot;,\n         \&quot;back-file\&quot;: \&quot;/run/media/testbench/bench/fsbench-0i3f922p/disk.raw\&quot;\n      }\n   ]\n}\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.001167671000075643
+    },
+    {
+      &quot;command&quot;: [
+        &quot;mkfs.f2fs&quot;,
+        &quot;-f&quot;,
+        &quot;-t&quot;,
+        &quot;0&quot;,
+        &quot;/dev/loop22&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;\n    F2FS-tools: mkfs.f2fs Ver: 1.16.0 (2023-04-11)\n\nInfo: Disable heap-based policy\nInfo: Debug level = 0\nInfo: Trim is disabled\nInfo: Segments per section = 1\nInfo: Sections per zone = 1\nInfo: sector size = 512\nInfo: total sectors = 195312500 (95367 MB)\nInfo: zone aligned segment0 blkaddr: 512\nInfo: format version with\n  \&quot;Linux version 7.3.0-9-generic (buildd@lcy02-amd64-053) (x86_64-linux-gnu-gcc (Ubuntu 15.3.0-4ubuntu1) 15.3.0, GNU ld (GNU Binutils for Ubuntu) 2.47) #9-Ubuntu SMP PREEMPT_DYNAMIC Mon Oct  5 10:38:02 UTC 2026\&quot;\nInfo: Overprovision ratio = 0.470%\nInfo: Overprovision segments = 224 (GC reserved = 219)\nInfo: format successful\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 2.149598464999144
+    },
+    {
+      &quot;command&quot;: [
+        &quot;mount&quot;,
+        &quot;-t&quot;,
+        &quot;f2fs&quot;,
+        &quot;-o&quot;,
+        &quot;rw,noatime,nodev,nosuid,noexec&quot;,
+        &quot;/dev/loop22&quot;,
+        &quot;/run/media/testbench/bench/fsbench-0i3f922p/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.05247401900123805
+    },
+    {
+      &quot;command&quot;: [
+        &quot;umount&quot;,
+        &quot;/run/media/testbench/bench/fsbench-0i3f922p/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.31282430099963676
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--associated&quot;,
+        &quot;/run/media/testbench/bench/fsbench-0i3f922p/disk.raw&quot;,
+        &quot;--noheadings&quot;,
+        &quot;--output&quot;,
+        &quot;NAME&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;/dev/loop22\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0014105999998719199
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--detach&quot;,
+        &quot;/dev/loop22&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0006985930012888275
+    }
+  ]
+}</pre></details><details id="run-5"><summary>F2FS (zstd, released blocks) — ok (2804.6 s)</summary><ul></ul><pre>{
+  &quot;variant&quot;: {
+    &quot;filesystem&quot;: &quot;f2fs&quot;,
+    &quot;compression&quot;: true,
+    &quot;driver&quot;: &quot;f2fs&quot;
+  },
+  &quot;label&quot;: &quot;F2FS (zstd, released blocks)&quot;,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;warnings&quot;: [],
+  &quot;format_seconds&quot;: 1.9910685750000994,
+  &quot;empty&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99997900800,
+      &quot;free_bytes&quot;: 99075743744,
+      &quot;available_bytes&quot;: 99075743744,
+      &quot;used_bytes&quot;: 922157056,
+      &quot;reserved_bytes&quot;: 0,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 13511677,
+      &quot;inodes_free&quot;: 13511676
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 0,
+      &quot;allocated_bytes&quot;: 0,
+      &quot;files&quot;: 0,
+      &quot;directories&quot;: 0,
+      &quot;directory_allocated_bytes&quot;: 0
+    },
+    &quot;image_allocated_bytes&quot;: 125894656,
+    &quot;unaddressable_bytes&quot;: 2099200,
+    &quot;native&quot;: {},
+    &quot;warnings&quot;: [],
+    &quot;file_data_bytes&quot;: 0,
+    &quot;non_file_overhead_estimate_bytes&quot;: 924256256
+  },
+  &quot;reference_write_seconds&quot;: 1310.062432271001,
+  &quot;reference&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99997900800,
+      &quot;free_bytes&quot;: 15615975424,
+      &quot;available_bytes&quot;: 15615975424,
+      &quot;used_bytes&quot;: 84381925376,
+      &quot;reserved_bytes&quot;: 0,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 13511677,
+      &quot;inodes_free&quot;: 3812494
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 83480168323,
+      &quot;allocated_bytes&quot;: 83451179008,
+      &quot;files&quot;: 2052,
+      &quot;directories&quot;: 25,
+      &quot;directory_allocated_bytes&quot;: 99840
+    },
+    &quot;image_allocated_bytes&quot;: 83752538112,
+    &quot;unaddressable_bytes&quot;: 2099200,
+    &quot;native&quot;: {},
+    &quot;warnings&quot;: [],
+    &quot;file_data_bytes&quot;: 83451179008,
+    &quot;non_file_overhead_estimate_bytes&quot;: 932845568,
+    &quot;f2fs_released_bytes&quot;: 115294208
+  },
+  &quot;reference_verified&quot;: true,
+  &quot;capacity_write_seconds&quot;: 465.97842443599984,
+  &quot;stop_reason&quot;: &quot;ENOSPC&quot;,
+  &quot;final&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99997900800,
+      &quot;free_bytes&quot;: 0,
+      &quot;available_bytes&quot;: 0,
+      &quot;used_bytes&quot;: 99997900800,
+      &quot;reserved_bytes&quot;: 0,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 13511677,
+      &quot;inodes_free&quot;: 0
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 99179688706,
+      &quot;allocated_bytes&quot;: 99059716096,
+      &quot;files&quot;: 3829,
+      &quot;directories&quot;: 47,
+      &quot;directory_allocated_bytes&quot;: 187392
+    },
+    &quot;image_allocated_bytes&quot;: 99399761920,
+    &quot;unaddressable_bytes&quot;: 2099200,
+    &quot;native&quot;: {},
+    &quot;warnings&quot;: [],
+    &quot;file_data_bytes&quot;: 99059716096,
+    &quot;non_file_overhead_estimate_bytes&quot;: 940283904,
+    &quot;f2fs_released_bytes&quot;: 225214464
+  },
+  &quot;completed_passes&quot;: 1,
+  &quot;seconds&quot;: 2804.647487045,
+  &quot;commands&quot;: [
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--find&quot;,
+        &quot;--show&quot;,
+        &quot;/run/media/testbench/bench/fsbench-vsd6_87n/disk.raw&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;/dev/loop22\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.03216531600082817
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--json&quot;,
+        &quot;--list&quot;,
+        &quot;--output&quot;,
+        &quot;NAME,BACK-FILE&quot;,
+        &quot;/dev/loop22&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;{\n   \&quot;loopdevices\&quot;: [\n      {\n         \&quot;name\&quot;: \&quot;/dev/loop22\&quot;,\n         \&quot;back-file\&quot;: \&quot;/run/media/testbench/bench/fsbench-vsd6_87n/disk.raw\&quot;\n      }\n   ]\n}\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0013683010001841467
+    },
+    {
+      &quot;command&quot;: [
+        &quot;mkfs.f2fs&quot;,
+        &quot;-f&quot;,
+        &quot;-t&quot;,
+        &quot;0&quot;,
+        &quot;-O&quot;,
+        &quot;extra_attr,compression&quot;,
+        &quot;/dev/loop22&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;\n    F2FS-tools: mkfs.f2fs Ver: 1.16.0 (2023-04-11)\n\nInfo: Disable heap-based policy\nInfo: Debug level = 0\nInfo: Trim is disabled\nInfo: Enable Compression\nInfo: Segments per section = 1\nInfo: Sections per zone = 1\nInfo: sector size = 512\nInfo: total sectors = 195312500 (95367 MB)\nInfo: zone aligned segment0 blkaddr: 512\nInfo: format version with\n  \&quot;Linux version 7.3.0-9-generic (buildd@lcy02-amd64-053) (x86_64-linux-gnu-gcc (Ubuntu 15.3.0-4ubuntu1) 15.3.0, GNU ld (GNU Binutils for Ubuntu) 2.47) #9-Ubuntu SMP PREEMPT_DYNAMIC Mon Oct  5 10:38:02 UTC 2026\&quot;\nInfo: Overprovision ratio = 0.470%\nInfo: Overprovision segments = 224 (GC reserved = 219)\nInfo: format successful\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 1.99101822800003
+    },
+    {
+      &quot;command&quot;: [
+        &quot;mount&quot;,
+        &quot;-t&quot;,
+        &quot;f2fs&quot;,
+        &quot;-o&quot;,
+        &quot;rw,noatime,nodev,nosuid,noexec,compress_algorithm=zstd,compress_extension=*&quot;,
+        &quot;/dev/loop22&quot;,
+        &quot;/run/media/testbench/bench/fsbench-vsd6_87n/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.012553270000353223
+    },
+    {
+      &quot;command&quot;: [
+        &quot;umount&quot;,
+        &quot;/run/media/testbench/bench/fsbench-vsd6_87n/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.5826482709999254
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--associated&quot;,
+        &quot;/run/media/testbench/bench/fsbench-vsd6_87n/disk.raw&quot;,
+        &quot;--noheadings&quot;,
+        &quot;--output&quot;,
+        &quot;NAME&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;/dev/loop22\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.002523406999898725
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--detach&quot;,
+        &quot;/dev/loop22&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.000988730998869869
+    }
+  ],
+  &quot;paired_net_saved_bytes&quot;: 108232704,
+  &quot;paired_net_saved_percent&quot;: 0.12951453029122537,
+  &quot;paired_file_allocation_saved_bytes&quot;: 111684608
+}</pre></details><details id="run-6"><summary>NTFS (default) — ok (3189.0 s)</summary><ul></ul><pre>{
+  &quot;variant&quot;: {
+    &quot;filesystem&quot;: &quot;ntfs&quot;,
+    &quot;compression&quot;: false,
+    &quot;driver&quot;: &quot;ntfs-3g&quot;
+  },
+  &quot;label&quot;: &quot;NTFS (default)&quot;,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;warnings&quot;: [],
+  &quot;format_seconds&quot;: 1.1515175700005784,
+  &quot;empty&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99999997952,
+      &quot;free_bytes&quot;: 99929374720,
+      &quot;available_bytes&quot;: 99929374720,
+      &quot;used_bytes&quot;: 70623232,
+      &quot;reserved_bytes&quot;: 0,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 97620048,
+      &quot;inodes_free&quot;: 97620029
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 0,
+      &quot;allocated_bytes&quot;: 0,
+      &quot;files&quot;: 0,
+      &quot;directories&quot;: 0,
+      &quot;directory_allocated_bytes&quot;: 0
+    },
+    &quot;image_allocated_bytes&quot;: 70627328,
+    &quot;unaddressable_bytes&quot;: 2048,
+    &quot;native&quot;: {},
+    &quot;warnings&quot;: [],
+    &quot;file_data_bytes&quot;: 0,
+    &quot;non_file_overhead_estimate_bytes&quot;: 70625280
+  },
+  &quot;format_info&quot;: &quot;Volume Information \n\tName of device: /dev/loop3\n\tDevice state: 11\n\tVolume Name: \n\tVolume State: 91\n\tVolume Flags: 0x0000\n\tVolume Version: 3.1\n\tSector Size: 512\n\tCluster Size: 4096\n\tIndex Block Size: 4096\n\tVolume Size in Clusters: 24414062\nMFT Information \n\tMFT Record Size: 1024\n\tMFT Zone Multiplier: 0\n\tMFT Data Position: 24\n\tMFT Zone Start: 0\n\tMFT Zone End: 3051761\n\tMFT Zone Position: 4\n\tCurrent Position in First Data Zone: 3051761\n\tCurrent Position in Second Data Zone: 0\n\tAllocated clusters 7 (0.0%)\n\tLCN of Data Attribute for FILE_MFT: 4\n\tFILE_MFTMirr Size: 4\n\tLCN of Data Attribute for File_MFTMirr: 12207031\n\tSize of Attribute Definition Table: 2560\n\tNumber of Attached Extent Inodes: 0\nFILE_Bitmap Information \n\tFILE_Bitmap MFT Record Number: 6\n\tState of FILE_Bitmap Inode: 80\n\tLength of Attribute List: 0\n\tNumber of Attached Extent Inodes: 0\nFILE_Bitmap Data Attribute Information\n\tDecompressed Runlist: not done yet\n\tBase Inode: 6\n\tAttribute Types: not done yet\n\tAttribute Name Length: 0\n\tAttribute State: 3\n\tAttribute Allocated Size: 3055616\n\tAttribute Data Size: 3051760\n\tAttribute Initialized Size: 3051760\n\tAttribute Compressed Size: 0\n\tCompression Block Size: 0\n\tCompression Block Size Bits: 0\n\tCompression Block Clusters: 0\n\tFree Clusters: 24396820 (99.9%)\nFile_Logfile Information\n\tNo restart page\nForced to continue.\n&quot;,
+  &quot;reference_write_seconds&quot;: 1485.7605396979998,
+  &quot;reference&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99999997952,
+      &quot;free_bytes&quot;: 16443609088,
+      &quot;available_bytes&quot;: 16443609088,
+      &quot;used_bytes&quot;: 83556388864,
+      &quot;reserved_bytes&quot;: 0,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 16090980,
+      &quot;inodes_free&quot;: 16088875
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 83480168323,
+      &quot;allocated_bytes&quot;: 83483250688,
+      &quot;files&quot;: 2052,
+      &quot;directories&quot;: 25,
+      &quot;directory_allocated_bytes&quot;: 499712
+    },
+    &quot;image_allocated_bytes&quot;: 83556454400,
+    &quot;unaddressable_bytes&quot;: 2048,
+    &quot;native&quot;: {},
+    &quot;warnings&quot;: [],
+    &quot;file_data_bytes&quot;: 83483250688,
+    &quot;non_file_overhead_estimate_bytes&quot;: 73140224,
+    &quot;f2fs_released_bytes&quot;: 0
+  },
+  &quot;reference_verified&quot;: true,
+  &quot;capacity_write_seconds&quot;: 514.8343307750001,
+  &quot;stop_reason&quot;: &quot;available-space limit&quot;,
+  &quot;final&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99999997952,
+      &quot;free_bytes&quot;: 0,
+      &quot;available_bytes&quot;: 0,
+      &quot;used_bytes&quot;: 99999997952,
+      &quot;reserved_bytes&quot;: 0,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 32768,
+      &quot;inodes_free&quot;: 28863
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 99918990397,
+      &quot;allocated_bytes&quot;: 99924719104,
+      &quot;files&quot;: 3828,
+      &quot;directories&quot;: 47,
+      &quot;directory_allocated_bytes&quot;: 937984
+    },
+    &quot;image_allocated_bytes&quot;: 100000108544,
+    &quot;unaddressable_bytes&quot;: 2048,
+    &quot;native&quot;: {},
+    &quot;warnings&quot;: [],
+    &quot;file_data_bytes&quot;: 99924719104,
+    &quot;non_file_overhead_estimate_bytes&quot;: 75280896,
+    &quot;f2fs_released_bytes&quot;: 0
+  },
+  &quot;completed_passes&quot;: 1,
+  &quot;seconds&quot;: 3188.957183319999,
+  &quot;commands&quot;: [
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--find&quot;,
+        &quot;--show&quot;,
+        &quot;/run/media/testbench/bench/fsbench-efrc1q1l/disk.raw&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;/dev/loop3\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.038694669001415605
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--json&quot;,
+        &quot;--list&quot;,
+        &quot;--output&quot;,
+        &quot;NAME,BACK-FILE&quot;,
+        &quot;/dev/loop3&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;{\n   \&quot;loopdevices\&quot;: [\n      {\n         \&quot;name\&quot;: \&quot;/dev/loop3\&quot;,\n         \&quot;back-file\&quot;: \&quot;/run/media/testbench/bench/fsbench-efrc1q1l/disk.raw\&quot;\n      }\n   ]\n}\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0014872199990350055
+    },
+    {
+      &quot;command&quot;: [
+        &quot;mkfs.ntfs&quot;,
+        &quot;-F&quot;,
+        &quot;-Q&quot;,
+        &quot;/dev/loop3&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;Cluster size has been automatically set to 4096 bytes.\nCreating NTFS volume structures.\nmkntfs completed successfully. Have a nice day.\n&quot;,
+      &quot;stderr&quot;: &quot;The partition start sector was not specified for /dev/loop3 and it could not be obtained automatically.  It has been set to 0.\nThe number of sectors per track was not specified for /dev/loop3 and it could not be obtained automatically.  It has been set to 0.\nThe number of heads was not specified for /dev/loop3 and it could not be obtained automatically.  It has been set to 0.\nTo boot from a device, Windows needs the &#x27;partition start sector&#x27;, the &#x27;sectors per track&#x27; and the &#x27;number of heads&#x27; to be set.\nWindows will not be able to boot from this device.\n&quot;,
+      &quot;seconds&quot;: 1.151486421998925
+    },
+    {
+      &quot;command&quot;: [
+        &quot;mount&quot;,
+        &quot;-t&quot;,
+        &quot;ntfs-3g&quot;,
+        &quot;-o&quot;,
+        &quot;rw,noatime,nodev,nosuid,noexec,nocompression&quot;,
+        &quot;/dev/loop3&quot;,
+        &quot;/run/media/testbench/bench/fsbench-efrc1q1l/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.007566963000499527
+    },
+    {
+      &quot;command&quot;: [
+        &quot;ntfsinfo&quot;,
+        &quot;-m&quot;,
+        &quot;-f&quot;,
+        &quot;/dev/loop3&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;Volume Information \n\tName of device: /dev/loop3\n\tDevice state: 11\n\tVolume Name: \n\tVolume State: 91\n\tVolume Flags: 0x0000\n\tVolume Version: 3.1\n\tSector Size: 512\n\tCluster Size: 4096\n\tIndex Block Size: 4096\n\tVolume Size in Clusters: 24414062\nMFT Information \n\tMFT Record Size: 1024\n\tMFT Zone Multiplier: 0\n\tMFT Data Position: 24\n\tMFT Zone Start: 0\n\tMFT Zone End: 3051761\n\tMFT Zone Position: 4\n\tCurrent Position in First Data Zone: 3051761\n\tCurrent Position in Second Data Zone: 0\n\tAllocated clusters 7 (0.0%)\n\tLCN of Data Attribute for FILE_MFT: 4\n\tFILE_MFTMirr Size: 4\n\tLCN of Data Attribute for File_MFTMirr: 12207031\n\tSize of Attribute Definition Table: 2560\n\tNumber of Attached Extent Inodes: 0\nFILE_Bitmap Information \n\tFILE_Bitmap MFT Record Number: 6\n\tState of FILE_Bitmap Inode: 80\n\tLength of Attribute List: 0\n\tNumber of Attached Extent Inodes: 0\nFILE_Bitmap Data Attribute Information\n\tDecompressed Runlist: not done yet\n\tBase Inode: 6\n\tAttribute Types: not done yet\n\tAttribute Name Length: 0\n\tAttribute State: 3\n\tAttribute Allocated Size: 3055616\n\tAttribute Data Size: 3051760\n\tAttribute Initialized Size: 3051760\n\tAttribute Compressed Size: 0\n\tCompression Block Size: 0\n\tCompression Block Size Bits: 0\n\tCompression Block Clusters: 0\n\tFree Clusters: 24396820 (99.9%)\nFile_Logfile Information\n\tNo restart page\n&quot;,
+      &quot;stderr&quot;: &quot;Forced to continue.\n&quot;,
+      &quot;seconds&quot;: 0.004094549998626462
+    },
+    {
+      &quot;command&quot;: [
+        &quot;umount&quot;,
+        &quot;/run/media/testbench/bench/fsbench-efrc1q1l/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.4246732700012217
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--associated&quot;,
+        &quot;/run/media/testbench/bench/fsbench-efrc1q1l/disk.raw&quot;,
+        &quot;--noheadings&quot;,
+        &quot;--output&quot;,
+        &quot;NAME&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;/dev/loop3\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.002692500002012821
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--detach&quot;,
+        &quot;/dev/loop3&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0009061609998752829
+    }
+  ]
+}</pre></details><details id="run-7"><summary>NTFS (LZNT1) — ok (3775.2 s)</summary><ul></ul><pre>{
+  &quot;variant&quot;: {
+    &quot;filesystem&quot;: &quot;ntfs&quot;,
+    &quot;compression&quot;: true,
+    &quot;driver&quot;: &quot;ntfs-3g&quot;
+  },
+  &quot;label&quot;: &quot;NTFS (LZNT1)&quot;,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;warnings&quot;: [],
+  &quot;format_seconds&quot;: 1.2977414519991726,
+  &quot;empty&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99999997952,
+      &quot;free_bytes&quot;: 99929374720,
+      &quot;available_bytes&quot;: 99929374720,
+      &quot;used_bytes&quot;: 70623232,
+      &quot;reserved_bytes&quot;: 0,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 97620048,
+      &quot;inodes_free&quot;: 97620029
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 0,
+      &quot;allocated_bytes&quot;: 0,
+      &quot;files&quot;: 0,
+      &quot;directories&quot;: 0,
+      &quot;directory_allocated_bytes&quot;: 0
+    },
+    &quot;image_allocated_bytes&quot;: 70627328,
+    &quot;unaddressable_bytes&quot;: 2048,
+    &quot;native&quot;: {},
+    &quot;warnings&quot;: [],
+    &quot;file_data_bytes&quot;: 0,
+    &quot;non_file_overhead_estimate_bytes&quot;: 70625280
+  },
+  &quot;format_info&quot;: &quot;Volume Information \n\tName of device: /dev/loop3\n\tDevice state: 11\n\tVolume Name: \n\tVolume State: 91\n\tVolume Flags: 0x0000\n\tVolume Version: 3.1\n\tSector Size: 512\n\tCluster Size: 4096\n\tIndex Block Size: 4096\n\tVolume Size in Clusters: 24414062\nMFT Information \n\tMFT Record Size: 1024\n\tMFT Zone Multiplier: 0\n\tMFT Data Position: 24\n\tMFT Zone Start: 0\n\tMFT Zone End: 3051761\n\tMFT Zone Position: 4\n\tCurrent Position in First Data Zone: 3051761\n\tCurrent Position in Second Data Zone: 0\n\tAllocated clusters 7 (0.0%)\n\tLCN of Data Attribute for FILE_MFT: 4\n\tFILE_MFTMirr Size: 4\n\tLCN of Data Attribute for File_MFTMirr: 12207031\n\tSize of Attribute Definition Table: 2560\n\tNumber of Attached Extent Inodes: 0\nFILE_Bitmap Information \n\tFILE_Bitmap MFT Record Number: 6\n\tState of FILE_Bitmap Inode: 80\n\tLength of Attribute List: 0\n\tNumber of Attached Extent Inodes: 0\nFILE_Bitmap Data Attribute Information\n\tDecompressed Runlist: not done yet\n\tBase Inode: 6\n\tAttribute Types: not done yet\n\tAttribute Name Length: 0\n\tAttribute State: 3\n\tAttribute Allocated Size: 3055616\n\tAttribute Data Size: 3051760\n\tAttribute Initialized Size: 3051760\n\tAttribute Compressed Size: 0\n\tCompression Block Size: 0\n\tCompression Block Size Bits: 0\n\tCompression Block Clusters: 0\n\tFree Clusters: 24396820 (99.9%)\nFile_Logfile Information\n\tNo restart page\nForced to continue.\n&quot;,
+  &quot;reference_write_seconds&quot;: 1613.8576045839982,
+  &quot;reference&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99999997952,
+      &quot;free_bytes&quot;: 16575234048,
+      &quot;available_bytes&quot;: 16575234048,
+      &quot;used_bytes&quot;: 83424763904,
+      &quot;reserved_bytes&quot;: 0,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 16219520,
+      &quot;inodes_free&quot;: 16217380
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 83480168323,
+      &quot;allocated_bytes&quot;: 83351523328,
+      &quot;files&quot;: 2052,
+      &quot;directories&quot;: 25,
+      &quot;directory_allocated_bytes&quot;: 499712
+    },
+    &quot;image_allocated_bytes&quot;: 83426627584,
+    &quot;unaddressable_bytes&quot;: 2048,
+    &quot;native&quot;: {},
+    &quot;warnings&quot;: [],
+    &quot;file_data_bytes&quot;: 83351523328,
+    &quot;non_file_overhead_estimate_bytes&quot;: 73242624,
+    &quot;f2fs_released_bytes&quot;: 0
+  },
+  &quot;reference_verified&quot;: true,
+  &quot;capacity_write_seconds&quot;: 970.5964812629973,
+  &quot;stop_reason&quot;: &quot;ENOSPC&quot;,
+  &quot;final&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99999997952,
+      &quot;free_bytes&quot;: 20480,
+      &quot;available_bytes&quot;: 20480,
+      &quot;used_bytes&quot;: 99999977472,
+      &quot;reserved_bytes&quot;: 0,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 32788,
+      &quot;inodes_free&quot;: 26113
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 100173950013,
+      &quot;allocated_bytes&quot;: 99921040896,
+      &quot;files&quot;: 6528,
+      &quot;directories&quot;: 48,
+      &quot;directory_allocated_bytes&quot;: 1626112
+    },
+    &quot;image_allocated_bytes&quot;: 100000129024,
+    &quot;unaddressable_bytes&quot;: 2048,
+    &quot;native&quot;: {},
+    &quot;warnings&quot;: [],
+    &quot;file_data_bytes&quot;: 99921040896,
+    &quot;non_file_overhead_estimate_bytes&quot;: 78938624,
+    &quot;f2fs_released_bytes&quot;: 0
+  },
+  &quot;completed_passes&quot;: 1,
+  &quot;seconds&quot;: 3775.155985638001,
+  &quot;commands&quot;: [
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--find&quot;,
+        &quot;--show&quot;,
+        &quot;/run/media/testbench/bench/fsbench-tqvi_8gb/disk.raw&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;/dev/loop3\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.05100723799841944
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--json&quot;,
+        &quot;--list&quot;,
+        &quot;--output&quot;,
+        &quot;NAME,BACK-FILE&quot;,
+        &quot;/dev/loop3&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;{\n   \&quot;loopdevices\&quot;: [\n      {\n         \&quot;name\&quot;: \&quot;/dev/loop3\&quot;,\n         \&quot;back-file\&quot;: \&quot;/run/media/testbench/bench/fsbench-tqvi_8gb/disk.raw\&quot;\n      }\n   ]\n}\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0009887619999062736
+    },
+    {
+      &quot;command&quot;: [
+        &quot;mkfs.ntfs&quot;,
+        &quot;-F&quot;,
+        &quot;-Q&quot;,
+        &quot;/dev/loop3&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;Cluster size has been automatically set to 4096 bytes.\nCreating NTFS volume structures.\nmkntfs completed successfully. Have a nice day.\n&quot;,
+      &quot;stderr&quot;: &quot;The partition start sector was not specified for /dev/loop3 and it could not be obtained automatically.  It has been set to 0.\nThe number of sectors per track was not specified for /dev/loop3 and it could not be obtained automatically.  It has been set to 0.\nThe number of heads was not specified for /dev/loop3 and it could not be obtained automatically.  It has been set to 0.\nTo boot from a device, Windows needs the &#x27;partition start sector&#x27;, the &#x27;sectors per track&#x27; and the &#x27;number of heads&#x27; to be set.\nWindows will not be able to boot from this device.\n&quot;,
+      &quot;seconds&quot;: 1.2976989000017056
+    },
+    {
+      &quot;command&quot;: [
+        &quot;mount&quot;,
+        &quot;-t&quot;,
+        &quot;ntfs-3g&quot;,
+        &quot;-o&quot;,
+        &quot;rw,noatime,nodev,nosuid,noexec,compression&quot;,
+        &quot;/dev/loop3&quot;,
+        &quot;/run/media/testbench/bench/fsbench-tqvi_8gb/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0066926050021720584
+    },
+    {
+      &quot;command&quot;: [
+        &quot;ntfsinfo&quot;,
+        &quot;-m&quot;,
+        &quot;-f&quot;,
+        &quot;/dev/loop3&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;Volume Information \n\tName of device: /dev/loop3\n\tDevice state: 11\n\tVolume Name: \n\tVolume State: 91\n\tVolume Flags: 0x0000\n\tVolume Version: 3.1\n\tSector Size: 512\n\tCluster Size: 4096\n\tIndex Block Size: 4096\n\tVolume Size in Clusters: 24414062\nMFT Information \n\tMFT Record Size: 1024\n\tMFT Zone Multiplier: 0\n\tMFT Data Position: 24\n\tMFT Zone Start: 0\n\tMFT Zone End: 3051761\n\tMFT Zone Position: 4\n\tCurrent Position in First Data Zone: 3051761\n\tCurrent Position in Second Data Zone: 0\n\tAllocated clusters 7 (0.0%)\n\tLCN of Data Attribute for FILE_MFT: 4\n\tFILE_MFTMirr Size: 4\n\tLCN of Data Attribute for File_MFTMirr: 12207031\n\tSize of Attribute Definition Table: 2560\n\tNumber of Attached Extent Inodes: 0\nFILE_Bitmap Information \n\tFILE_Bitmap MFT Record Number: 6\n\tState of FILE_Bitmap Inode: 80\n\tLength of Attribute List: 0\n\tNumber of Attached Extent Inodes: 0\nFILE_Bitmap Data Attribute Information\n\tDecompressed Runlist: not done yet\n\tBase Inode: 6\n\tAttribute Types: not done yet\n\tAttribute Name Length: 0\n\tAttribute State: 3\n\tAttribute Allocated Size: 3055616\n\tAttribute Data Size: 3051760\n\tAttribute Initialized Size: 3051760\n\tAttribute Compressed Size: 0\n\tCompression Block Size: 0\n\tCompression Block Size Bits: 0\n\tCompression Block Clusters: 0\n\tFree Clusters: 24396820 (99.9%)\nFile_Logfile Information\n\tNo restart page\n&quot;,
+      &quot;stderr&quot;: &quot;Forced to continue.\n&quot;,
+      &quot;seconds&quot;: 0.003583445999538526
+    },
+    {
+      &quot;command&quot;: [
+        &quot;umount&quot;,
+        &quot;/run/media/testbench/bench/fsbench-tqvi_8gb/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.661680326997157
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--associated&quot;,
+        &quot;/run/media/testbench/bench/fsbench-tqvi_8gb/disk.raw&quot;,
+        &quot;--noheadings&quot;,
+        &quot;--output&quot;,
+        &quot;NAME&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;/dev/loop3\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0019631600007414818
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--detach&quot;,
+        &quot;/dev/loop3&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0009175710001727566
+    }
+  ],
+  &quot;paired_net_saved_bytes&quot;: 131624960,
+  &quot;paired_net_saved_percent&quot;: 0.15766155943301105,
+  &quot;paired_file_allocation_saved_bytes&quot;: 131727360
+}</pre></details><details id="run-8"><summary>exFAT (default) — error (906.5 s)</summary><ul></ul><pre>{
+  &quot;variant&quot;: {
+    &quot;filesystem&quot;: &quot;exfat&quot;,
+    &quot;compression&quot;: false,
+    &quot;driver&quot;: &quot;exfat&quot;
+  },
+  &quot;label&quot;: &quot;exFAT (default)&quot;,
+  &quot;status&quot;: &quot;error&quot;,
+  &quot;warnings&quot;: [],
+  &quot;format_seconds&quot;: 0.04433920799783664,
+  &quot;empty&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99995746304,
+      &quot;free_bytes&quot;: 99995353088,
+      &quot;available_bytes&quot;: 99995353088,
+      &quot;used_bytes&quot;: 393216,
+      &quot;reserved_bytes&quot;: 0,
+      &quot;block_size&quot;: 131072,
+      &quot;inodes_total&quot;: 0,
+      &quot;inodes_free&quot;: 0
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 0,
+      &quot;allocated_bytes&quot;: 0,
+      &quot;files&quot;: 0,
+      &quot;directories&quot;: 0,
+      &quot;directory_allocated_bytes&quot;: 0
+    },
+    &quot;image_allocated_bytes&quot;: 430080,
+    &quot;unaddressable_bytes&quot;: 4253696,
+    &quot;native&quot;: {},
+    &quot;warnings&quot;: [],
+    &quot;file_data_bytes&quot;: 0,
+    &quot;non_file_overhead_estimate_bytes&quot;: 4646912
+  },
+  &quot;error&quot;: &quot;[Errno 22] Invalid argument: &#x27;/run/media/testbench/bench/fsbench-7vr72y2r/mount/payload/pass-000000/vids/Video_2026-06-27_20-35-01 (14:58.2 - 15:48.3).mkv&#x27;&quot;,
+  &quot;seconds&quot;: 906.505543170002,
+  &quot;commands&quot;: [
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--find&quot;,
+        &quot;--show&quot;,
+        &quot;/run/media/testbench/bench/fsbench-7vr72y2r/disk.raw&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;/dev/loop3\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.036716881000756985
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--json&quot;,
+        &quot;--list&quot;,
+        &quot;--output&quot;,
+        &quot;NAME,BACK-FILE&quot;,
+        &quot;/dev/loop3&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;{\n   \&quot;loopdevices\&quot;: [\n      {\n         \&quot;name\&quot;: \&quot;/dev/loop3\&quot;,\n         \&quot;back-file\&quot;: \&quot;/run/media/testbench/bench/fsbench-7vr72y2r/disk.raw\&quot;\n      }\n   ]\n}\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.000873935001436621
+    },
+    {
+      &quot;command&quot;: [
+        &quot;mkfs.exfat&quot;,
+        &quot;--help&quot;
+      ],
+      &quot;returncode&quot;: 1,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;Usage: mkfs.exfat\n\t-L | --volume-label=label                              Set volume label\n\t-U | --volume-guid=guid                                Set volume GUID\n\t-s | --sector-size=size(or suffixed by &#x27;K&#x27;)            Specify sector size\n\t-c | --cluster-size=size(or suffixed by &#x27;K&#x27; or &#x27;M&#x27;)    Specify cluster size\n\t-b | --boundary-align=size(or suffixed by &#x27;K&#x27; or &#x27;M&#x27;)  Specify boundary alignment\n\t     --pack-bitmap                                     Move bitmap into FAT segment\n\t     --upcase=file                                     Specify up-case table binary file\n\t     --bootcode-msg=message                            Specify custom message in MBR bootstrap code\n\t-P | --partition-table=auto|none|mbr|gpt               Specify partition table\n\t-f | --full-format                                     Full format\n\t-F | --force                                           Overwrite an existing non-exFAT filesystem\n\t-C | --check-written                                   Verify written filesystem metadata by read-back\n\t-K | --no-discard                                      Do not discard blocks\n\t-V | --version                                         Show version\n\t-q | --quiet                                           Print only errors\n\t-v | --verbose                                         Print debug\n\t-h | --help                                            Show help\n&quot;,
+      &quot;seconds&quot;: 0.001422930999979144
+    },
+    {
+      &quot;command&quot;: [
+        &quot;mkfs.exfat&quot;,
+        &quot;-P&quot;,
+        &quot;none&quot;,
+        &quot;-K&quot;,
+        &quot;/dev/loop3&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;exfatprogs version : 1.4.3 (2026-08-14)\nlibblkid version : 2.42.2 (16-Jun-2026)\nPartition table: none\nZeroing out 65536 bytes: done\nCreating exFAT filesystem(/dev/loop3, cluster size=131072)\n\nWriting volume boot record: done\nWriting backup volume boot record: done\nFat table creation: done\nAllocation bitmap creation: done\nUpcase table creation: done\nWriting root directory entry: done\nFilesystem UUID: EBCF-DBCC\nSynchronizing...\n\nexFAT format complete!\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.04254536399821518
+    },
+    {
+      &quot;command&quot;: [
+        &quot;mount&quot;,
+        &quot;-t&quot;,
+        &quot;exfat&quot;,
+        &quot;-o&quot;,
+        &quot;rw,noatime,nodev,nosuid,noexec&quot;,
+        &quot;/dev/loop3&quot;,
+        &quot;/run/media/testbench/bench/fsbench-7vr72y2r/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.013426481000351487
+    },
+    {
+      &quot;command&quot;: [
+        &quot;umount&quot;,
+        &quot;/run/media/testbench/bench/fsbench-7vr72y2r/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.27810367500205757
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--associated&quot;,
+        &quot;/run/media/testbench/bench/fsbench-7vr72y2r/disk.raw&quot;,
+        &quot;--noheadings&quot;,
+        &quot;--output&quot;,
+        &quot;NAME&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;/dev/loop3\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.00232699399930425
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--detach&quot;,
+        &quot;/dev/loop3&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0013348329994187225
+    }
+  ]
+}</pre></details><details id="run-9"><summary>XFS (reflink=0, rmapbt=0, parent=0) — ok (2150.9 s)</summary><ul></ul><pre>{
+  &quot;variant&quot;: {
+    &quot;filesystem&quot;: &quot;xfs&quot;,
+    &quot;compression&quot;: false,
+    &quot;driver&quot;: &quot;xfs&quot;,
+    &quot;profile&quot;: &quot;lean&quot;
+  },
+  &quot;label&quot;: &quot;XFS (reflink=0, rmapbt=0, parent=0)&quot;,
+  &quot;status&quot;: &quot;ok&quot;,
+  &quot;warnings&quot;: [],
+  &quot;format_seconds&quot;: 0.1076792790008767,
+  &quot;empty&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99932889088,
+      &quot;free_bytes&quot;: 99799531520,
+      &quot;available_bytes&quot;: 99799531520,
+      &quot;used_bytes&quot;: 133357568,
+      &quot;reserved_bytes&quot;: 0,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 48828096,
+      &quot;inodes_free&quot;: 48828093
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 0,
+      &quot;allocated_bytes&quot;: 0,
+      &quot;files&quot;: 0,
+      &quot;directories&quot;: 0,
+      &quot;directory_allocated_bytes&quot;: 0
+    },
+    &quot;image_allocated_bytes&quot;: 67436544,
+    &quot;unaddressable_bytes&quot;: 67110912,
+    &quot;native&quot;: {},
+    &quot;warnings&quot;: [],
+    &quot;file_data_bytes&quot;: 0,
+    &quot;non_file_overhead_estimate_bytes&quot;: 200468480
+  },
+  &quot;format_info&quot;: &quot;meta-data=/dev/loop3             isize=512    agcount=4, agsize=6103516 blks\n         =                       sectsz=512   attr=2, projid32bit=1\n         =                       crc=1        finobt=1, sparse=1, rmapbt=0\n         =                       reflink=0    bigtime=1 inobtcount=1 nrext64=1\n         =                       exchange=1   metadir=0\ndata     =                       bsize=4096   blocks=24414062, imaxpct=25\n         =                       sunit=0      swidth=0 blks\nnaming   =version 2              bsize=4096   ascii-ci=0, ftype=1, parent=0\nlog      =internal log           bsize=4096   blocks=16384, version=2\n         =                       sectsz=512   sunit=0 blks, lazy-count=1\nrealtime =none                   extsz=4096   blocks=0, rtextents=0\n         =                       rgcount=0    rgsize=0 extents\n         =                       zoned=0      start=0 reserved=0\n&quot;,
+  &quot;reference_write_seconds&quot;: 1054.4185064550002,
+  &quot;reference&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99932889088,
+      &quot;free_bytes&quot;: 16314081280,
+      &quot;available_bytes&quot;: 16314081280,
+      &quot;used_bytes&quot;: 83618807808,
+      &quot;reserved_bytes&quot;: 0,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 31865616,
+      &quot;inodes_free&quot;: 31863536
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 83480168323,
+      &quot;allocated_bytes&quot;: 83484192768,
+      &quot;files&quot;: 2052,
+      &quot;directories&quot;: 25,
+      &quot;directory_allocated_bytes&quot;: 176128
+    },
+    &quot;image_allocated_bytes&quot;: 83552755712,
+    &quot;unaddressable_bytes&quot;: 67110912,
+    &quot;native&quot;: {},
+    &quot;warnings&quot;: [],
+    &quot;file_data_bytes&quot;: 83484192768,
+    &quot;non_file_overhead_estimate_bytes&quot;: 201725952,
+    &quot;f2fs_released_bytes&quot;: 0
+  },
+  &quot;reference_verified&quot;: true,
+  &quot;capacity_write_seconds&quot;: 323.8491123899985,
+  &quot;stop_reason&quot;: &quot;ENOSPC&quot;,
+  &quot;final&quot;: {
+    &quot;space&quot;: {
+      &quot;total_bytes&quot;: 99932889088,
+      &quot;free_bytes&quot;: 208896,
+      &quot;available_bytes&quot;: 208896,
+      &quot;used_bytes&quot;: 99932680192,
+      &quot;reserved_bytes&quot;: 0,
+      &quot;block_size&quot;: 4096,
+      &quot;inodes_total&quot;: 4440,
+      &quot;inodes_free&quot;: 519
+    },
+    &quot;files&quot;: {
+      &quot;logical_bytes&quot;: 99789399706,
+      &quot;allocated_bytes&quot;: 99796959232,
+      &quot;files&quot;: 3870,
+      &quot;directories&quot;: 48,
+      &quot;directory_allocated_bytes&quot;: 331776
+    },
+    &quot;image_allocated_bytes&quot;: 99866578944,
+    &quot;unaddressable_bytes&quot;: 67110912,
+    &quot;native&quot;: {},
+    &quot;warnings&quot;: [],
+    &quot;file_data_bytes&quot;: 99796959232,
+    &quot;non_file_overhead_estimate_bytes&quot;: 202831872,
+    &quot;f2fs_released_bytes&quot;: 0
+  },
+  &quot;completed_passes&quot;: 1,
+  &quot;seconds&quot;: 2150.919351002998,
+  &quot;commands&quot;: [
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--find&quot;,
+        &quot;--show&quot;,
+        &quot;/run/media/testbench/bench/fsbench-jjjazhoy/disk.raw&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;/dev/loop3\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0755175340018468
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--json&quot;,
+        &quot;--list&quot;,
+        &quot;--output&quot;,
+        &quot;NAME,BACK-FILE&quot;,
+        &quot;/dev/loop3&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;{\n   \&quot;loopdevices\&quot;: [\n      {\n         \&quot;name\&quot;: \&quot;/dev/loop3\&quot;,\n         \&quot;back-file\&quot;: \&quot;/run/media/testbench/bench/fsbench-jjjazhoy/disk.raw\&quot;\n      }\n   ]\n}\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.003753925000637537
+    },
+    {
+      &quot;command&quot;: [
+        &quot;mkfs.xfs&quot;,
+        &quot;-f&quot;,
+        &quot;-K&quot;,
+        &quot;-m&quot;,
+        &quot;reflink=0,rmapbt=0&quot;,
+        &quot;-n&quot;,
+        &quot;parent=0&quot;,
+        &quot;/dev/loop3&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;meta-data=/dev/loop3             isize=512    agcount=4, agsize=6103516 blks\n         =                       sectsz=512   attr=2, projid32bit=1\n         =                       crc=1        finobt=1, sparse=1, rmapbt=0\n         =                       reflink=0    bigtime=1 inobtcount=1 nrext64=1\n         =                       exchange=1   metadir=0\ndata     =                       bsize=4096   blocks=24414062, imaxpct=25\n         =                       sunit=0      swidth=0 blks\nnaming   =version 2              bsize=4096   ascii-ci=0, ftype=1, parent=0\nlog      =internal log           bsize=4096   blocks=16384, version=2\n         =                       sectsz=512   sunit=0 blks, lazy-count=1\nrealtime =none                   extsz=4096   blocks=0, rtextents=0\n         =                       rgcount=0    rgsize=0 extents\n         =                       zoned=0      start=0 reserved=0\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.10756996000054642
+    },
+    {
+      &quot;command&quot;: [
+        &quot;mount&quot;,
+        &quot;-t&quot;,
+        &quot;xfs&quot;,
+        &quot;-o&quot;,
+        &quot;rw,noatime,nodev,nosuid,noexec&quot;,
+        &quot;/dev/loop3&quot;,
+        &quot;/run/media/testbench/bench/fsbench-jjjazhoy/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.007991611997567816
+    },
+    {
+      &quot;command&quot;: [
+        &quot;xfs_info&quot;,
+        &quot;/run/media/testbench/bench/fsbench-jjjazhoy/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;meta-data=/dev/loop3             isize=512    agcount=4, agsize=6103516 blks\n         =                       sectsz=512   attr=2, projid32bit=1\n         =                       crc=1        finobt=1, sparse=1, rmapbt=0\n         =                       reflink=0    bigtime=1 inobtcount=1 nrext64=1\n         =                       exchange=1   metadir=0\ndata     =                       bsize=4096   blocks=24414062, imaxpct=25\n         =                       sunit=0      swidth=0 blks\nnaming   =version 2              bsize=4096   ascii-ci=0, ftype=1, parent=0\nlog      =internal log           bsize=4096   blocks=16384, version=2\n         =                       sectsz=512   sunit=0 blks, lazy-count=1\nrealtime =none                   extsz=4096   blocks=0, rtextents=0\n         =                       rgcount=0    rgsize=0 extents\n         =                       zoned=0      start=0 reserved=0\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.009358054998301668
+    },
+    {
+      &quot;command&quot;: [
+        &quot;umount&quot;,
+        &quot;/run/media/testbench/bench/fsbench-jjjazhoy/mount&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.31405105800149613
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--associated&quot;,
+        &quot;/run/media/testbench/bench/fsbench-jjjazhoy/disk.raw&quot;,
+        &quot;--noheadings&quot;,
+        &quot;--output&quot;,
+        &quot;NAME&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;/dev/loop3\n&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.0070286770023813006
+    },
+    {
+      &quot;command&quot;: [
+        &quot;losetup&quot;,
+        &quot;--detach&quot;,
+        &quot;/dev/loop3&quot;
+      ],
+      &quot;returncode&quot;: 0,
+      &quot;stdout&quot;: &quot;&quot;,
+      &quot;stderr&quot;: &quot;&quot;,
+      &quot;seconds&quot;: 0.003515303000312997
+    }
+  ]
+}</pre></details>
+<details><summary>Original configuration</summary><pre>{
+  &quot;image_dir&quot;: &quot;/run/media/testbench/bench&quot;,
+  &quot;disk_size&quot;: 100000000000,
+  &quot;filesystems&quot;: [
+    &quot;ext4&quot;,
+    &quot;xfs&quot;,
+    &quot;btrfs&quot;,
+    &quot;f2fs&quot;,
+    &quot;ntfs&quot;,
+    &quot;exfat&quot;
+  ],
+  &quot;compression&quot;: &quot;on&quot;,
+  &quot;ntfs_driver&quot;: &quot;ntfs-3g&quot;,
+  &quot;mode&quot;: &quot;full&quot;,
+  &quot;data_dir&quot;: &quot;/home/testbench/Dokumenty/fsoverheadbench/demo_data&quot;,
+  &quot;demo_dir&quot;: &quot;/home/testbench/Dokumenty/fsoverheadbench/demo_data&quot;,
+  &quot;dataset_size&quot;: 268435456,
+  &quot;small_files&quot;: 2000,
+  &quot;seed&quot;: 2026,
+  &quot;output&quot;: &quot;/home/testbench/Dokumenty/fsoverheadbench/report.html&quot;,
+  &quot;ext4_reserved_percent&quot;: 5.0,
+  &quot;leave_free&quot;: 0,
+  &quot;max_logical_bytes&quot;: 400000000000,
+  &quot;host_reserve&quot;: 2147483648,
+  &quot;no_verify&quot;: false,
+  &quot;progress_interval&quot;: 5.0,
+  &quot;dry_run&quot;: false,
+  &quot;generate_only&quot;: false,
+  &quot;custom_data&quot;: false
+}</pre></details>
+<details><summary>Appended run configurations and environments</summary><pre>[
+  {
+    &quot;started_at&quot;: &quot;2026-10-11T20:05:56+00:00&quot;,
+    &quot;config&quot;: {
+      &quot;image_dir&quot;: &quot;/run/media/testbench/bench&quot;,
+      &quot;disk_size&quot;: 100000000000,
+      &quot;filesystems&quot;: [
+        &quot;xfs-lean&quot;
+      ],
+      &quot;compression&quot;: &quot;off&quot;,
+      &quot;ntfs_driver&quot;: &quot;ntfs-3g&quot;,
+      &quot;mode&quot;: &quot;full&quot;,
+      &quot;data_dir&quot;: &quot;/home/testbench/Dokumenty/fsoverheadbench/demo_data&quot;,
+      &quot;demo_dir&quot;: &quot;/home/testbench/Dokumenty/fsoverheadbench/demo_data&quot;,
+      &quot;dataset_size&quot;: 268435456,
+      &quot;small_files&quot;: 2000,
+      &quot;seed&quot;: 2026,
+      &quot;output&quot;: &quot;/home/testbench/Dokumenty/fsoverheadbench/report.html&quot;,
+      &quot;append&quot;: true,
+      &quot;ext4_reserved_percent&quot;: 5.0,
+      &quot;leave_free&quot;: 0,
+      &quot;max_logical_bytes&quot;: 400000000000,
+      &quot;host_reserve&quot;: 2147483648,
+      &quot;no_verify&quot;: false,
+      &quot;progress_interval&quot;: 5.0,
+      &quot;dry_run&quot;: false,
+      &quot;generate_only&quot;: false,
+      &quot;custom_data&quot;: false
+    },
+    &quot;environment&quot;: {
+      &quot;platform&quot;: &quot;Linux-7.3.0-9-generic-x86_64-with-glibc2.44&quot;,
+      &quot;kernel&quot;: &quot;7.3.0-9-generic&quot;,
+      &quot;python&quot;: &quot;3.14.8&quot;,
+      &quot;tools&quot;: {
+        &quot;losetup&quot;: {
+          &quot;path&quot;: &quot;/usr/sbin/losetup&quot;,
+          &quot;version&quot;: &quot;losetup from util-linux 2.42.2&quot;
+        },
+        &quot;mount&quot;: {
+          &quot;path&quot;: &quot;/usr/bin/mount&quot;,
+          &quot;version&quot;: &quot;mount from util-linux 2.42.2 (libmount 2.42.2: selinux, smack, btrfs, verity, namespaces, idmapping, statmount, statx, fanotify, udev, assert, debug)&quot;
+        },
+        &quot;mkfs.ext4&quot;: {
+          &quot;path&quot;: &quot;/usr/sbin/mkfs.ext4&quot;,
+          &quot;version&quot;: &quot;mke2fs 1.47.4 (6-Mar-2025)\n\tUsing EXT2FS Library version 1.47.4&quot;
+        },
+        &quot;mkfs.xfs&quot;: {
+          &quot;path&quot;: &quot;/usr/sbin/mkfs.xfs&quot;,
+          &quot;version&quot;: &quot;mkfs.xfs version 6.19.0&quot;
+        },
+        &quot;mkfs.btrfs&quot;: {
+          &quot;path&quot;: &quot;/usr/sbin/mkfs.btrfs&quot;,
+          &quot;version&quot;: &quot;mkfs.btrfs, part of btrfs-progs v7.1\n-EXPERIMENTAL -INJECT -STATIC +LZO +ZSTD +UDEV +FSVERITY +ZONED CRYPTO=builtin&quot;
+        },
+        &quot;mkfs.f2fs&quot;: {
+          &quot;path&quot;: &quot;/usr/sbin/mkfs.f2fs&quot;,
+          &quot;version&quot;: &quot;mkfs.f2fs 1.16.0 (2023-04-11)&quot;
+        },
+        &quot;mkfs.ntfs&quot;: {
+          &quot;path&quot;: &quot;/usr/sbin/mkfs.ntfs&quot;,
+          &quot;version&quot;: &quot;mkntfs v2026.7.7 (libntfs-3g)\n\nCreate an NTFS volume on a user specified (block) device.\n\nCopyright (c) 2000-2007 Anton Altaparmakov\nCopyright (c) 2001-2005 Richard Russon\nCopyright (c) 2002-2006 Szabolcs Szakacsits\nCopyright (c) 2005      Erik Sornes\nCopyright (c) 2007      Yura Pakhuchiy\nCopyright (c) 2010-2018 Jean-Pierre Andre\n\nThis program is free software, released under the GNU General Public License\nand you are welcome to redistribute it under certain conditions.  It comes with\nABSOLUTELY NO WARRANTY; for details read the GNU General Public License to be\nfound in the file \&quot;COPYING\&quot; distributed with this program, or online at:\nhttp://www.gnu.org/copyleft/gpl.html\n\nDevelopers&#x27; email address: ntfs-3g-devel@lists.sf.net\nNews, support and information:  https://github.com/tuxera/ntfs-3g/&quot;
+        },
+        &quot;mkfs.exfat&quot;: {
+          &quot;path&quot;: &quot;/usr/sbin/mkfs.exfat&quot;,
+          &quot;version&quot;: &quot;exfatprogs version : 1.4.3 (2026-08-14)\nlibblkid version : 2.42.2 (16-Jun-2026)&quot;
+        },
+        &quot;ntfs-3g&quot;: {
+          &quot;path&quot;: &quot;/usr/bin/ntfs-3g&quot;,
+          &quot;version&quot;: &quot;ntfs-3g 2026.7.7 integrated FUSE 28&quot;
+        },
+        &quot;btrfs&quot;: {
+          &quot;path&quot;: &quot;/usr/bin/btrfs&quot;,
+          &quot;version&quot;: &quot;btrfs-progs v7.1\n-EXPERIMENTAL -INJECT -STATIC +LZO +ZSTD +UDEV +FSVERITY +ZONED CRYPTO=builtin&quot;
+        }
+      },
+      &quot;optional_compsize&quot;: &quot;/usr/sbin/compsize&quot;,
+      &quot;filesystems&quot;: &quot;nodev\tsysfs\nnodev\ttmpfs\nnodev\tproc\nnodev\tcgroup\nnodev\tcgroup2\nnodev\tdevtmpfs\nnodev\tconfigfs\nnodev\tdebugfs\nnodev\ttracefs\nnodev\tsecurityfs\nnodev\tsockfs\nnodev\tbpf\nnodev\tpipefs\nnodev\tramfs\nnodev\thugetlbfs\nnodev\tdevpts\n\text3\n\text2\n\text4\n\tsquashfs\n\tvfat\nnodev\tecryptfs\n\tfuseblk\nnodev\tfuse\nnodev\tfusectl\nnodev\tefivarfs\nnodev\tmqueue\nnodev\tpstore\nnodev\tautofs\n\txfs\nnodev\tbinfmt_misc\n\tbtrfs\n\tf2fs\n\texfat\n&quot;,
+      &quot;ext4_host_defaults&quot;: &quot;[defaults]\n\tbase_features = sparse_super,large_file,filetype,resize_inode,dir_index,ext_attr\n\tdefault_mntopts = acl,user_xattr\n\tenable_periodic_fsck = 0\n\tblocksize = 4096\n\tinode_size = 256\n\tinode_ratio = 16384\n\n[fs_types]\n\text3 = {\n\t\tfeatures = has_journal\n\t}\n\text4 = {\n\t\tfeatures = has_journal,extent,huge_file,flex_bg,metadata_csum,metadata_csum_seed,64bit,dir_nlink,extra_isize,orphan_file\n\t}\n\tsmall = {\n\t\tblocksize = 1024\n\t\tinode_ratio = 4096\n\t}\n\tfloppy = {\n\t\tblocksize = 1024\n\t\tinode_ratio = 8192\n\t}\n\tbig = {\n\t\tinode_ratio = 32768\n\t}\n\thuge = {\n\t\tinode_ratio = 65536\n\t}\n\tnews = {\n\t\tinode_ratio = 4096\n\t}\n\tlargefile = {\n\t\tinode_ratio = 1048576\n\t\tblocksize = -1\n\t}\n\tlargefile4 = {\n\t\tinode_ratio = 4194304\n\t\tblocksize = -1\n\t}\n\thurd = {\n\t     blocksize = 4096\n\t     inode_size = 128\n\t     warn_y2038_dates = 0\n\t}\n&quot;
+    }
+  }
+]</pre></details>
+<details><summary>Original environment and tool versions</summary><pre>{
+  &quot;platform&quot;: &quot;Linux-7.3.0-9-generic-x86_64-with-glibc2.44&quot;,
+  &quot;kernel&quot;: &quot;7.3.0-9-generic&quot;,
+  &quot;python&quot;: &quot;3.14.8&quot;,
+  &quot;tools&quot;: {
+    &quot;losetup&quot;: {
+      &quot;path&quot;: &quot;/usr/sbin/losetup&quot;,
+      &quot;version&quot;: &quot;losetup from util-linux 2.42.2&quot;
+    },
+    &quot;mount&quot;: {
+      &quot;path&quot;: &quot;/usr/bin/mount&quot;,
+      &quot;version&quot;: &quot;mount from util-linux 2.42.2 (libmount 2.42.2: selinux, smack, btrfs, verity, namespaces, idmapping, statmount, statx, fanotify, udev, assert, debug)&quot;
+    },
+    &quot;mkfs.ext4&quot;: {
+      &quot;path&quot;: &quot;/usr/sbin/mkfs.ext4&quot;,
+      &quot;version&quot;: &quot;mke2fs 1.47.4 (6-Mar-2025)\n\tUsing EXT2FS Library version 1.47.4&quot;
+    },
+    &quot;mkfs.xfs&quot;: {
+      &quot;path&quot;: &quot;/usr/sbin/mkfs.xfs&quot;,
+      &quot;version&quot;: &quot;mkfs.xfs version 6.19.0&quot;
+    },
+    &quot;mkfs.btrfs&quot;: {
+      &quot;path&quot;: &quot;/usr/sbin/mkfs.btrfs&quot;,
+      &quot;version&quot;: &quot;mkfs.btrfs, part of btrfs-progs v7.1\n-EXPERIMENTAL -INJECT -STATIC +LZO +ZSTD +UDEV +FSVERITY +ZONED CRYPTO=builtin&quot;
+    },
+    &quot;mkfs.f2fs&quot;: {
+      &quot;path&quot;: &quot;/usr/sbin/mkfs.f2fs&quot;,
+      &quot;version&quot;: &quot;mkfs.f2fs 1.16.0 (2023-04-11)&quot;
+    },
+    &quot;mkfs.ntfs&quot;: {
+      &quot;path&quot;: &quot;/usr/sbin/mkfs.ntfs&quot;,
+      &quot;version&quot;: &quot;mkntfs v2026.7.7 (libntfs-3g)\n\nCreate an NTFS volume on a user specified (block) device.\n\nCopyright (c) 2000-2007 Anton Altaparmakov\nCopyright (c) 2001-2005 Richard Russon\nCopyright (c) 2002-2006 Szabolcs Szakacsits\nCopyright (c) 2005      Erik Sornes\nCopyright (c) 2007      Yura Pakhuchiy\nCopyright (c) 2010-2018 Jean-Pierre Andre\n\nThis program is free software, released under the GNU General Public License\nand you are welcome to redistribute it under certain conditions.  It comes with\nABSOLUTELY NO WARRANTY; for details read the GNU General Public License to be\nfound in the file \&quot;COPYING\&quot; distributed with this program, or online at:\nhttp://www.gnu.org/copyleft/gpl.html\n\nDevelopers&#x27; email address: ntfs-3g-devel@lists.sf.net\nNews, support and information:  https://github.com/tuxera/ntfs-3g/&quot;
+    },
+    &quot;mkfs.exfat&quot;: {
+      &quot;path&quot;: &quot;/usr/sbin/mkfs.exfat&quot;,
+      &quot;version&quot;: &quot;exfatprogs version : 1.4.3 (2026-08-14)\nlibblkid version : 2.42.2 (16-Jun-2026)&quot;
+    },
+    &quot;ntfs-3g&quot;: {
+      &quot;path&quot;: &quot;/usr/bin/ntfs-3g&quot;,
+      &quot;version&quot;: &quot;ntfs-3g 2026.7.7 integrated FUSE 28&quot;
+    },
+    &quot;btrfs&quot;: {
+      &quot;path&quot;: &quot;/usr/bin/btrfs&quot;,
+      &quot;version&quot;: &quot;btrfs-progs v7.1\n-EXPERIMENTAL -INJECT -STATIC +LZO +ZSTD +UDEV +FSVERITY +ZONED CRYPTO=builtin&quot;
+    }
+  },
+  &quot;optional_compsize&quot;: &quot;/usr/sbin/compsize&quot;,
+  &quot;filesystems&quot;: &quot;nodev\tsysfs\nnodev\ttmpfs\nnodev\tproc\nnodev\tcgroup\nnodev\tcgroup2\nnodev\tdevtmpfs\nnodev\tconfigfs\nnodev\tdebugfs\nnodev\ttracefs\nnodev\tsecurityfs\nnodev\tsockfs\nnodev\tbpf\nnodev\tpipefs\nnodev\tramfs\nnodev\thugetlbfs\nnodev\tdevpts\n\text3\n\text2\n\text4\n\tsquashfs\n\tvfat\nnodev\tecryptfs\n\tfuseblk\nnodev\tfuse\nnodev\tfusectl\nnodev\tefivarfs\nnodev\tmqueue\nnodev\tpstore\nnodev\tautofs\n\txfs\nnodev\tbinfmt_misc\n&quot;,
+  &quot;ext4_host_defaults&quot;: &quot;[defaults]\n\tbase_features = sparse_super,large_file,filetype,resize_inode,dir_index,ext_attr\n\tdefault_mntopts = acl,user_xattr\n\tenable_periodic_fsck = 0\n\tblocksize = 4096\n\tinode_size = 256\n\tinode_ratio = 16384\n\n[fs_types]\n\text3 = {\n\t\tfeatures = has_journal\n\t}\n\text4 = {\n\t\tfeatures = has_journal,extent,huge_file,flex_bg,metadata_csum,metadata_csum_seed,64bit,dir_nlink,extra_isize,orphan_file\n\t}\n\tsmall = {\n\t\tblocksize = 1024\n\t\tinode_ratio = 4096\n\t}\n\tfloppy = {\n\t\tblocksize = 1024\n\t\tinode_ratio = 8192\n\t}\n\tbig = {\n\t\tinode_ratio = 32768\n\t}\n\thuge = {\n\t\tinode_ratio = 65536\n\t}\n\tnews = {\n\t\tinode_ratio = 4096\n\t}\n\tlargefile = {\n\t\tinode_ratio = 1048576\n\t\tblocksize = -1\n\t}\n\tlargefile4 = {\n\t\tinode_ratio = 4194304\n\t\tblocksize = -1\n\t}\n\thurd = {\n\t     blocksize = 4096\n\t     inode_size = 128\n\t     warn_y2038_dates = 0\n\t}\n&quot;
+}</pre></details>
+<p class="muted">Sources: <a href="https://btrfs.readthedocs.io/en/latest/btrfs-filesystem.html">Btrfs accounting</a>,
+<a href="https://github.com/kilobyte/compsize">compsize</a>,
+<a href="https://www.kernel.org/doc/html/latest/filesystems/f2fs.html">F2FS compression</a>,
+<a href="https://github.com/tuxera/ntfs-3g/wiki/Using-Transparently-Compressed-Files">NTFS-3G compression</a>.</p>
+<script>
+document.querySelectorAll('th').forEach(th => th.addEventListener('click', () => {
+ const table=th.closest('table'), body=table.tBodies[0], col=th.cellIndex;
+ const asc=th.dataset.sort!=='asc'; th.dataset.sort=asc?'asc':'desc';
+ const rows=Array.from(body.rows);
+ rows.sort((a,b)=>{const x=a.cells[col],y=b.cells[col];if(!x||!y)return 0;
+  const xv=x.dataset.value,yv=y.dataset.value;
+  const d=xv!==undefined&&yv!==undefined ? Number(xv)-Number(yv) : x.textContent.localeCompare(y.textContent,undefined,{numeric:true});
+  return asc?d:-d;}); rows.forEach(r=>body.appendChild(r));
+}));
+</script></html>

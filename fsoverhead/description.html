@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="How the Linux filesystem space benchmark works and what each reported measurement means.">
+<title>Filesystem benchmark overview</title>
+<style>
+:root { color-scheme:light dark; font-family:system-ui,sans-serif; line-height:1.55; --accent:#227641; --border:#8885; --subtle:#8881; }
+* { box-sizing:border-box; }
+body { max-width:1500px; margin:40px auto; padding:0 24px; }
+h1 { font-size:clamp(26px,3vw,32px); line-height:1.2; margin:0 0 6px; letter-spacing:-.025em; }
+h2 { font-size:22px; margin:0 0 10px; }
+h3 { font-size:17px; margin:0 0 6px; }
+p { margin:0 0 12px; }
+a { color:inherit; text-underline-offset:3px; }
+button,input { font:inherit; color:inherit; }
+button { cursor:pointer; }
+button:disabled { cursor:default; }
+:focus-visible { outline:3px solid var(--accent); outline-offset:4px; }
+.muted { opacity:.75; }
+.skip { position:absolute; top:-80px; background:Canvas; padding:12px; z-index:5; }
+.skip:focus { top:10px; }
+.page-header { display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; }
+.page-header .muted { margin:0; }
+.report-link { display:inline-flex; align-items:center; gap:12px; text-decoration:none; border:1px solid var(--border); border-radius:8px; padding:10px 16px; white-space:nowrap; }
+.report-link:hover { background:var(--subtle); }
+.lead { max-width:900px; margin:22px 0 0; font-size:16px; }
+.cards { display:flex; flex-wrap:wrap; gap:16px; margin:24px 0; }
+.card { flex:1; border:1px solid var(--border); border-radius:8px; padding:16px; min-width:210px; }
+.card strong { display:block; font-size:24px; margin:3px 0; }
+.card .muted { font-size:14px; }
+.section { margin-top:36px; }
+.section-heading { display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
+.mode { display:inline-flex; border:1px solid var(--border); border-radius:8px; padding:3px; gap:3px; }
+.mode button { border:0; border-radius:5px; background:transparent; padding:7px 12px; font-size:14px; }
+.mode button[aria-pressed="true"] { background:var(--subtle); color:var(--accent); font-weight:600; }
+.workflow-panel { border:1px solid var(--border); border-radius:8px; padding:24px; margin:16px 0; }
+.workflow { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); list-style:none; padding:0; margin:0; gap:26px; }
+.workflow li { position:relative; min-width:0; }
+.workflow li:not(:last-child)::after { content:''; position:absolute; right:-21px; top:50%; width:16px; height:2px; background:currentColor; opacity:.45; transform:translateY(-50%); }
+.workflow li:not(:last-child)::before { content:''; position:absolute; right:-21px; top:50%; width:6px; height:6px; border-top:2px solid; border-right:2px solid; opacity:.45; transform:translateY(-50%) rotate(45deg); }
+.step { display:flex; flex-direction:column; align-items:flex-start; width:100%; height:100%; gap:10px; padding:14px 12px; text-align:left; border:1px solid var(--border); border-radius:8px; background:transparent; font-size:14px; line-height:1.4; }
+.step:hover { background:var(--subtle); }
+.step[aria-pressed="true"] { border-color:var(--accent); background:var(--subtle); }
+.step:disabled { opacity:.4; }
+.step-number { display:grid; place-items:center; border:1px solid var(--border); border-radius:50%; width:26px; height:26px; font-size:12px; font-weight:600; flex-shrink:0; }
+.step[aria-pressed="true"] .step-number { color:var(--accent); border-color:var(--accent); }
+.step small { opacity:.7; font-size:11px; }
+.step-detail { border-top:1px solid var(--border); margin-top:20px; padding-top:16px; min-height:94px; }
+.step-detail p { max-width:1050px; font-size:14px; margin:0; }
+.mode-note { margin-top:12px; font-size:14px; }
+.comparisons { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px; }
+.comparison { border:1px solid var(--border); border-radius:8px; padding:16px; }
+.comparison p { margin:0; font-size:14px; }
+.toolbar { display:flex; justify-content:space-between; gap:16px; align-items:center; flex-wrap:wrap; margin:20px 0 12px; }
+.search { display:flex; align-items:center; gap:10px; border:1px solid var(--border); border-radius:8px; padding:8px 12px; max-width:520px; flex:1; min-width:240px; }
+.search input { width:100%; min-width:0; border:0; background:transparent; outline:none; }
+.search:focus-within { outline:2px solid var(--accent); outline-offset:2px; }
+.search input:focus-visible { outline:none; }
+.search button { border:0; background:transparent; padding:0 4px; opacity:.7; }
+.search button:disabled { opacity:.25; }
+.search-status { font-size:13px; }
+.scroll { overflow:auto; border:1px solid var(--border); border-radius:8px; }
+table { border-collapse:collapse; width:100%; font-size:14px; }
+th,td { text-align:left; padding:12px; border-bottom:1px solid #8884; vertical-align:top; }
+thead th { background:var(--subtle); font-weight:600; }
+tbody th { width:31%; min-width:190px; font-weight:500; }
+tbody th strong { font-weight:600; }
+tr:last-child th,tr:last-child td { border-bottom:0; }
+tbody tr:hover { background:var(--subtle); }
+[hidden] { display:none !important; }
+details { border:1px solid var(--border); border-radius:8px; margin:16px 0; padding:16px; }
+summary { cursor:pointer; font-weight:600; }
+summary .muted { font-size:13px; font-weight:400; margin-left:8px; }
+details .scroll { margin-top:16px; }
+.note { padding:16px; background:var(--subtle); border:1px solid var(--border); border-radius:8px; margin-top:16px; font-size:14px; }
+.note p:last-child { margin:0; }
+.empty { padding:16px; border:1px solid var(--border); border-radius:8px; }
+footer { border-top:1px solid var(--border); margin-top:32px; padding:20px 0; font-size:13px; display:flex; gap:16px; justify-content:space-between; flex-wrap:wrap; }
+@media (prefers-color-scheme:dark) { :root { --accent:#7bce95; } }
+@media (max-width:1000px) { .workflow { gap:18px; } .workflow li:not(:last-child)::after { right:-15px; width:12px; } .workflow li:not(:last-child)::before { right:-15px; } .step { padding:12px 8px; font-size:12px; } }
+@media (max-width:760px) {
+ body { margin:24px auto; padding:0 16px; } .workflow-panel { padding:16px; }
+ .workflow { grid-template-columns:1fr; gap:22px; } .step { flex-direction:row; align-items:center; font-size:14px; padding:12px; }
+ .step small { margin-left:auto; } .workflow li:not(:last-child)::after { right:auto; left:24px; top:auto; bottom:-18px; width:2px; height:14px; transform:none; }
+ .workflow li:not(:last-child)::before { right:auto; left:22px; top:auto; bottom:-18px; transform:rotate(135deg); }
+ .comparisons { grid-template-columns:1fr; } tbody th { width:38%; min-width:120px; }
+ th,td { padding:10px; } .card { min-width:150px; } .section { margin-top:28px; }
+ .step-detail { min-height:0; }
+}
+@media print {
+ body { margin:0; padding:0; color:#000; background:#fff; max-width:none; }
+ .report-link,.mode,.toolbar,.skip,footer { display:none; }
+ .workflow-panel,.comparison,details,.scroll,.note,.card { break-inside:avoid; }
+ .step { color:#000; } .step-number { border-color:#777; } details { border:0; padding:0; }
+ .scroll { overflow:visible; } table { font-size:11px; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to overview</a>
+<header class="page-header">
+ <div><h1>Filesystem benchmark overview</h1><p class="muted">How the test works · what the measurements mean</p></div>
+ <a class="report-link" href="report.html">Open results <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></a>
+</header>
+<main id="main">
+<p class="lead">Compare how efficiently <strong>EXT4, XFS, Btrfs, F2FS, NTFS and exFAT</strong> use disk space, with additional compression runs where supported.</p>
+<div class="cards">
+ <div class="card">Default virtual disk<strong>100 GB</strong><span class="muted">93.13 GiB · fresh for every configuration</span></div>
+ <div class="card">Default configurations<strong>6 + 3</strong><span class="muted">Six filesystems · three compression variants</span></div>
+ <div class="card">Shared workload<strong>Same source files</strong><span class="muted">One copy for efficiency · repeated for capacity</span></div>
+</div>
+<section class="section" aria-labelledby="workflow-heading">
+ <div class="section-heading"><h2 id="workflow-heading">The test flow</h2>
+ <div class="mode" role="group" aria-label="Benchmark mode">
+  <button type="button" data-mode="full" aria-pressed="true">Full fill</button>
+  <button type="button" data-mode="sample" aria-pressed="false">Sample only</button>
+ </div></div>
+ <p class="muted">Select a step to see what happens. Switch modes to compare the two test paths.</p>
+ <div class="workflow-panel">
+  <ol class="workflow" aria-label="Benchmark workflow">
+   <li><button type="button" class="step" data-step="0" aria-pressed="true" aria-controls="step-detail"><span class="step-number">1</span><span>Create &amp; format disk</span></button></li>
+   <li><button type="button" class="step" data-step="1" aria-pressed="false" aria-controls="step-detail"><span class="step-number">2</span><span>Measure empty space</span></button></li>
+   <li><button type="button" class="step" data-step="2" aria-pressed="false" aria-controls="step-detail"><span class="step-number">3</span><span>Copy shared dataset</span></button></li>
+   <li><button type="button" class="step" data-step="3" aria-pressed="false" aria-controls="step-detail"><span class="step-number">4</span><span>Measure efficiency</span></button></li>
+   <li><button type="button" class="step" data-step="4" aria-pressed="false" aria-controls="step-detail"><span class="step-number">5</span><span>Fill remaining space</span><small>Full mode</small></button></li>
+   <li><button type="button" class="step" data-step="5" aria-pressed="false" aria-controls="step-detail"><span class="step-number">6</span><span>Record &amp; clean up</span></button></li>
+  </ol>
+  <div class="step-detail" id="step-detail" aria-live="polite" aria-atomic="true">
+   <h3 id="step-title">1. Create and format a fresh disk</h3>
+   <p id="step-description">Create a disposable virtual disk in the chosen folder, attach it as a verified loop device, then format and mount it with the selected filesystem.</p>
+  </div>
+ </div>
+ <p class="mode-note" id="mode-note">Full mode measures the first copy, then repeats the dataset to discover usable capacity.</p>
+ <div class="comparisons">
+  <div class="comparison"><h3>Storage efficiency</h3><p>How much space the same dataset consumes, including filesystem overhead and compression savings.</p></div>
+  <div class="comparison"><h3>Usable capacity</h3><p>How much logical data fits when the dataset is repeated until available space or a configured limit is reached.</p></div>
+ </div>
+ <p class="mode-note muted">Optional verification checks that copied files match the originals. After each configuration, the disk is removed and results are added to the HTML and JSON reports.</p>
+</section>
+<section class="section" aria-labelledby="measurements-heading">
+ <h2 id="measurements-heading">What the measured values mean</h2>
+ <p>The capacity table describes the final fill. The efficiency table compares the <strong>same first copy</strong> across configurations. Detailed snapshots are recorded when the filesystem is empty, after that first copy, and after filling.</p>
+ <div class="toolbar" id="search-toolbar" hidden>
+  <label class="search"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg><span class="visually-hidden" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)">Find a measurement</span>
+   <input id="measurement-search" type="search" placeholder="Find a measurement, e.g. reserved space" autocomplete="off">
+   <button id="clear-search" type="button" aria-label="Clear measurement search" disabled>×</button>
+  </label>
+  <span class="search-status muted" id="search-status" role="status" aria-live="polite">26 measurements</span>
+ </div>
+ <div class="scroll">
+  <table id="comparison-values" aria-label="Values in the comparison tables"><thead><tr><th scope="col">Value in the comparison tables</th><th scope="col">Meaning</th></tr></thead><tbody>
+<tr><th scope="row"><strong>Empty usable space</strong></th><td>Space available to ordinary users immediately after formatting.</td></tr>
+<tr><th scope="row"><strong>Empty reserved space</strong></th><td>Free space held back from ordinary users, such as EXT4&#x27;s root reserve.</td></tr>
+<tr><th scope="row"><strong>Logical data / logical data stored</strong></th><td>Sum of file lengths before compression: the first copy&#x27;s size or the final amount stored. Sample mode does not measure full capacity.</td></tr>
+<tr><th scope="row"><strong>File data allocation</strong></th><td>Space reported as allocated to file contents, including block rounding. Compressed Btrfs uses extent measurements when available.</td></tr>
+<tr><th scope="row"><strong>Final available</strong></th><td>Space still available to ordinary users when the run stops.</td></tr>
+<tr><th scope="row"><strong>Non-file overhead (est.)</strong></th><td>Disk size minus free filesystem space minus reported file allocation. Includes journals, directories, fixed structures and other accounting differences; excludes reserved free blocks.</td></tr>
+<tr><th scope="row"><strong>Btrfs metadata used</strong></th><td>Native metadata usage, counting both copies when metadata is duplicated. Can include small files stored inside metadata.</td></tr>
+<tr><th scope="row"><strong>Files stored</strong></th><td>Number of copied files present at the end.</td></tr>
+<tr><th scope="row"><strong>Extent / released savings</strong></th><td>Bytes saved by Btrfs extent compression, or compression reservation bytes released by F2FS. These use different filesystem-specific counters.</td></tr>
+<tr><th scope="row"><strong>Net saved vs baseline</strong></th><td>Reduction in space consumed by the first copy versus the uncompressed run of the same filesystem. Includes metadata and rounding effects; a negative value means compression consumed more space.</td></tr>
+<tr><th scope="row"><strong>Read-back</strong></th><td>Whether copied contents passed BLAKE3 verification, or verification was skipped.</td></tr>
+<tr><th scope="row"><strong>Write MiB/s</strong></th><td>First-copy logical bytes written per second, including file syncing and F2FS reservation release, excluding read-back verification.</td></tr>
+<tr><th scope="row"><strong>Status / stop reason</strong></th><td>Whether the run succeeded, failed, was skipped or interrupted, and whether filling stopped at a space or quota limit, a logical-data limit, or sample mode.</td></tr>
+  </tbody></table>
+ </div>
+ <details id="additional-values" open><summary>Additional values in run details <span class="muted">13 measurements</span></summary>
+  <div class="scroll"><table aria-label="Additional measurements in run details"><thead><tr><th scope="col">Value</th><th scope="col">Meaning</th></tr></thead><tbody>
+<tr><th scope="row"><strong>Virtual disk / shared dataset</strong></th><td>Image size, source-file bytes and source-file count. The default 100 GB disk is 93.13 GiB.</td></tr>
+<tr><th scope="row"><strong>Filesystem total, free and used</strong></th><td>The filesystem&#x27;s reported space: used = total − free. Free includes reserved blocks; available excludes them.</td></tr>
+<tr><th scope="row"><strong>Unaddressable bytes</strong></th><td>Difference between image size and the filesystem&#x27;s reported total. Already included in the overhead estimate.</td></tr>
+<tr><th scope="row"><strong>Block size</strong></th><td>Unit used to convert filesystem space counters into bytes. File allocation counters are separately expressed in 512-byte units.</td></tr>
+<tr><th scope="row"><strong>Inodes total / free</strong></th><td>Filesystem-reported capacity and availability of file records; interpretation varies by filesystem.</td></tr>
+<tr><th scope="row"><strong>Directories / directory allocation</strong></th><td>Number of copied directories, including the payload root, and their reported allocated space. Directory space is already part of the overhead estimate.</td></tr>
+<tr><th scope="row"><strong>Raw image host allocation</strong></th><td>Space allocated to the image on the host filesystem. Host compression and sparse allocation affect it; it measures a different layer from guest space.</td></tr>
+<tr><th scope="row"><strong>Btrfs allocation details</strong></th><td>Used data/system bytes, metadata space allocated versus actually used, and allocation-group profiles. Physical summaries account for duplicated copies.</td></tr>
+<tr><th scope="row"><strong>Btrfs compression details</strong></th><td>Physical extent size, original uncompressed extent size and referenced file bytes. Saved bytes and saving percentage compare original and physical extent sizes.</td></tr>
+<tr><th scope="row"><strong>F2FS released bytes</strong></th><td>Compression reservation bytes reclaimed so they become usable. Releasing them prevents further writes to those files without reserving space again.</td></tr>
+<tr><th scope="row"><strong>Paired file-allocation savings</strong></th><td>Difference in reported file allocation between the same first copy in baseline and compressed runs. Net-saving percentage instead compares total additional consumed space.</td></tr>
+<tr><th scope="row"><strong>Completed passes</strong></th><td>Number of complete copies of the workload, including the first copy. A final partial pass or tail files can add more data.</td></tr>
+<tr><th scope="row"><strong>Durations</strong></th><td>Seconds spent formatting, writing the first copy, filling further, running individual commands, and completing the whole configuration.</td></tr>
+  </tbody></table></div>
+ </details>
+ <p class="empty" id="no-matches" hidden>No matching measurements. Try “space”, “compression” or “files”.</p>
+ <div class="note"><p><strong>Read the results in context.</strong> Capacity depends on the workload. Metadata overhead is estimated, and reserved free space is reported separately. Some counters overlap and should not be added together.</p>
+ <p>A logical-data limit gives a lower bound on capacity. A dash means a value is unavailable or does not apply. Tool versions, commands, warnings and errors provide context for the measurements.</p></div>
+</section>
+</main>
+<footer><span class="muted">Linux filesystem space benchmark · methodology guide</span><span><a href="overview.md">Markdown version</a> · <a href="README.md">Full documentation</a> · <a href="report.html">Results</a></span></footer>
+<script>
+(() => {
+ const stepButtons = [...document.querySelectorAll('[data-step]')];
+ const modeButtons = [...document.querySelectorAll('[data-mode]')];
+ const titles = ['Create and format a fresh disk', 'Measure the empty filesystem', 'Copy the shared dataset', 'Measure storage efficiency', 'Fill the remaining space', 'Record results and clean up'];
+ const descriptions = [
+  'Create a disposable virtual disk in the chosen folder, attach it as a verified loop device, then format and mount it with the selected filesystem.',
+  'Measure the space available before any test files are copied, with reserved space reported separately from filesystem overhead.',
+  'Write exactly the same source files to every configuration using ordinary copies. Sync completed files so the measurements reflect allocated storage.',
+  'Record logical file sizes, reported allocation, estimated overhead and available compression statistics. Optional BLAKE3 read-back verification checks the copied contents.',
+  'Repeat the dataset in new directories until the filesystem reaches its available-space or configured logical-data limit. Measure the amount actually stored.',
+  'Capture the final measurements, unmount the filesystem, detach its loop device and delete the image. Update the HTML and JSON reports before continuing to the next configuration.'
+ ];
+ let selected = 0;
+ const selectStep = index => {
+  selected = index;
+  stepButtons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
+  document.getElementById('step-title').textContent = `${index + 1}. ${titles[index]}`;
+  document.getElementById('step-description').textContent = descriptions[index];
+ };
+ stepButtons.forEach((button, index) => button.addEventListener('click', () => selectStep(index)));
+ modeButtons.forEach(button => button.addEventListener('click', () => {
+  const sample = button.dataset.mode === 'sample';
+  modeButtons.forEach(other => other.setAttribute('aria-pressed', String(other === button)));
+  stepButtons[4].disabled = sample;
+  stepButtons[4].querySelector('small').textContent = sample ? 'Skipped' : 'Full mode';
+  if (sample && selected === 4) selectStep(3);
+  document.getElementById('mode-note').textContent = sample
+   ? 'Sample mode stops after the first copy and its measurements, then cleans up. It does not measure full capacity.'
+   : 'Full mode measures the first copy, then repeats the dataset to discover usable capacity.';
+ }));
+ const toolbar = document.getElementById('search-toolbar');
+ const input = document.getElementById('measurement-search');
+ const clear = document.getElementById('clear-search');
+ const rows = [...document.querySelectorAll('tbody tr')];
+ const additional = document.getElementById('additional-values');
+ let previousOpen = additional.open;
+ let filtering = false;
+ const filter = () => {
+  const query = input.value.trim().toLowerCase();
+  if (query && !filtering) { previousOpen = additional.open; filtering = true; }
+  let count = 0;
+  rows.forEach(row => { row.hidden = !row.textContent.toLowerCase().includes(query); if (!row.hidden) count++; });
+  if (query) additional.open = [...additional.querySelectorAll('tbody tr')].some(row => !row.hidden);
+  else if (filtering) { additional.open = previousOpen; filtering = false; }
+  clear.disabled = !input.value;
+  document.getElementById('search-status').textContent = query ? `${count} of ${rows.length} measurements` : `${rows.length} measurements`;
+  document.getElementById('no-matches').hidden = count !== 0;
+ };
+ input.addEventListener('input', filter);
+ clear.addEventListener('click', () => { input.value = ''; filter(); input.focus(); });
+ toolbar.hidden = false;
+ filter();
+})();
+</script>
+</body>
+</html>
