@@ -933,6 +933,7 @@ Write rates include per-file fsync and F2FS release ioctls; this is a space benc
 <a href="https://www.kernel.org/doc/html/latest/filesystems/f2fs.html">F2FS compression</a>,
 <a href="https://github.com/tuxera/ntfs-3g/wiki/Using-Transparently-Compressed-Files">NTFS-3G compression</a>.</p>
 <script>
+"use strict";
 document.querySelectorAll('th').forEach(th => th.addEventListener('click', () => {{
  const table=th.closest('table'), body=table.tBodies[0], col=th.cellIndex;
  const asc=th.dataset.sort!=='asc'; th.dataset.sort=asc?'asc':'desc';
