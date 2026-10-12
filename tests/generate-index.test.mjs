@@ -42,7 +42,7 @@ test('creates independent nested listings with canonical links, breadcrumbs and 
   assert.match(nested, /fa-brands fa-python/);
   assert.match(await readFile(path.join(outputDir, 'empty/index.html'), 'utf8'), /This folder is empty/);
   assert.equal(await readFile(path.join(outputDir, 'report.html'), 'utf8'), await readFile(path.join(sourceDir, 'report.html'), 'utf8'));
-  assert.match(root, /href="\/report.html" data-prefetch-document/);
+  assert.match(root, /href="\/report" data-prefetch-document/);
   assert.match(await readFile(path.join(outputDir, '404.html'), 'utf8'), /Page not found/);
 });
 
@@ -53,7 +53,7 @@ test('encodes filenames as URL path segments and escapes names and attributes', 
   await put(`${directory}/${filename}`, '<p>Report</p>');
   await generateDirectoryIndexes({ sourceDir, outputDir });
   const folder = await readFile(path.join(outputDir, directory, 'index.html'), 'utf8');
-  assert.match(folder, /href="\/m%C4%9B%C5%99en%C3%AD%20%26%20tests\/RTX3080%2Bi9%20%231%25%20%22quoted%22%20%3Ctag%3E.html"/);
+  assert.match(folder, /href="\/m%C4%9B%C5%99en%C3%AD%20%26%20tests\/RTX3080%2Bi9%20%231%25%20%22quoted%22%20%3Ctag%3E"/);
   assert.match(folder, /RTX3080\+i9 #1% &quot;quoted&quot; &lt;tag&gt;.html/);
   assert.doesNotMatch(folder, /<tag>/);
 });
@@ -121,9 +121,9 @@ test('the default DATA source keeps deployed report, folder and asset paths at t
   }
   const root = await readFile(path.join(outputDir, 'index.html'), 'utf8');
   const folder = await readFile(path.join(outputDir, 'fsoverhead/index.html'), 'utf8');
-  assert.match(root, /href="\/hardinfo2_report_hunt.html"/);
+  assert.match(root, /href="\/hardinfo2_report_hunt"/);
   assert.match(root, /href="\/fsoverhead\/"/);
-  assert.match(folder, /href="\/fsoverhead\/report.html"/);
+  assert.match(folder, /href="\/fsoverhead\/report"/);
   assert.match(root, /src="\/_assets\/browser.js"/);
   assert.doesNotMatch(root + folder, /(?:href|src)="\/DATA\//);
 });
@@ -154,7 +154,7 @@ test('embeds each folder README below its listing and retains the raw file link'
   assert.match(root, /class="hljs-keyword">const/);
   assert.match(root, /href="\/README.md"/);
   assert.match(folder, /<h1 id="readme-folder-notes">Folder notes/);
-  assert.match(folder, /href="\/fsoverhead\/report.html"/);
+  assert.match(folder, /href="\/fsoverhead\/report"/);
   assert.match(folder, /class="readme-mermaid"/);
   assert.doesNotMatch(folder, /Root notes/);
   assert.doesNotMatch(plain, /class="readme-panel"/);

@@ -2,6 +2,7 @@ import { Marked } from 'marked';
 import hljs from 'highlight.js';
 import sanitizeHtml from 'sanitize-html';
 import GithubSlugger from 'github-slugger';
+import { canonicalHtmlPath } from './page-url.mjs';
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, character => ({
@@ -9,12 +10,14 @@ function escapeHtml(value) {
   })[character]);
 }
 
-function resolveUrl(value, directoryUrl) {
+function resolveUrl(value, directoryUrl, pageLink = false) {
   if (value.startsWith('#')) return value.startsWith('#readme-') ? value : `#readme-${value.slice(1)}`;
   const base = new URL(directoryUrl, 'https://readme.invalid');
   try {
     const url = new URL(value, base);
-    return url.origin === base.origin ? `${url.pathname}${url.search}${url.hash}` : value;
+    if (url.origin !== base.origin) return value;
+    const pathname = pageLink ? canonicalHtmlPath(url.pathname) : url.pathname;
+    return `${pathname}${url.search}${url.hash}`;
   } catch {
     return value;
   }
@@ -68,7 +71,7 @@ export function renderReadme(markdown, directoryUrl = '/') {
       h1: scopeHeadingId, h2: scopeHeadingId, h3: scopeHeadingId,
       h4: scopeHeadingId, h5: scopeHeadingId, h6: scopeHeadingId,
       a(tagName, attributes) {
-        if (attributes.href) attributes.href = resolveUrl(attributes.href, directoryUrl);
+        if (attributes.href) attributes.href = resolveUrl(attributes.href, directoryUrl, true);
         if (attributes.id) attributes.id = `readme-${attributes.id}`;
         return { tagName, attribs: attributes };
       },

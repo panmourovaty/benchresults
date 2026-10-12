@@ -42,13 +42,36 @@ test('keeps Mermaid definitions intact and hides unused canvas and error element
 
 test('resolves relative Markdown and HTML links and images from the folder URL', () => {
   const html = renderReadme('[Report](./report.html)\n\n[Parent](../summary.html)\n\n[External](https://example.com/)\n\n![Plot](images/plot.png)\n\n<a href="./report.json">Data</a><img src="../logo.svg">', '/fsoverhead/nested/');
-  assert.match(html, /href="\/fsoverhead\/nested\/report.html"/);
-  assert.match(html, /href="\/fsoverhead\/summary.html"/);
+  assert.match(html, /href="\/fsoverhead\/nested\/report"/);
+  assert.match(html, /href="\/fsoverhead\/summary"/);
   assert.match(html, /href="https:\/\/example.com\/"/);
   assert.match(html, /src="\/fsoverhead\/nested\/images\/plot.png"/);
   assert.match(html, /src="\/fsoverhead\/logo.svg"/);
   assert.match(html, /href="\/fsoverhead\/nested\/report.json"/);
   assert.match(html, /loading="lazy" decoding="async"/);
+});
+
+test('README page links bypass HTML redirects while preserving query strings, fragments and external links', () => {
+  const html = renderReadme([
+    '[Details](report.html?mode=full#run-0)',
+    '[Folder](nested/index.html#notes)',
+    '[Home](/index.html)',
+    '[Data](report.json?file=example.html)',
+    '[Legacy](report.htm)',
+    '[External](https://example.com/report.html)',
+    '[Protocol relative](//example.com/report.html)',
+    '<a href="../summary.html?mode=full#results">Summary</a>',
+    '![Image source](thumbnail.html)',
+  ].join('\n\n'), '/fsoverhead/');
+  assert.match(html, /href="\/fsoverhead\/report\?mode=full#run-0"/);
+  assert.match(html, /href="\/fsoverhead\/nested\/#notes"/);
+  assert.match(html, /href="\/"/);
+  assert.match(html, /href="\/fsoverhead\/report.json\?file=example.html"/);
+  assert.match(html, /href="\/fsoverhead\/report.htm"/);
+  assert.match(html, /href="https:\/\/example.com\/report.html"/);
+  assert.match(html, /href="\/\/example.com\/report.html"/);
+  assert.match(html, /href="\/summary\?mode=full#results"/);
+  assert.match(html, /src="\/fsoverhead\/thumbnail.html"/);
 });
 
 test('README HTML cannot execute scripts, override navigation or collide with the browser IDs', () => {

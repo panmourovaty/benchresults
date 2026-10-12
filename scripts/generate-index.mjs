@@ -2,6 +2,7 @@ import { cp, mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises'
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { renderReadme } from './render-readme.mjs';
+import { canonicalHtmlPath } from './page-url.mjs';
 
 export const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const dataRoot = path.join(projectRoot, 'DATA');
@@ -26,7 +27,8 @@ export function escapeHtml(value) {
 export function publicUrl(relativePath, directory = false) {
   const encoded = relativePath.split('/').map(segment => encodeURIComponent(segment)
     .replace(/[!'()*]/g, char => `%${char.charCodeAt(0).toString(16).toUpperCase()}`)).join('/');
-  return `/${encoded}${directory && encoded ? '/' : ''}`;
+  const pathname = `/${encoded}${directory && encoded ? '/' : ''}`;
+  return directory ? pathname : canonicalHtmlPath(pathname);
 }
 
 function formatBytes(bytes) {
