@@ -4,6 +4,8 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import { minify } from 'html-minifier-terser';
+import { createHash } from 'node:crypto';
+import { gzipSync } from 'node:zlib';
 import { dataRoot, generateDirectoryIndexes } from '../scripts/generate-index.mjs';
 
 async function fixture(t) {
@@ -126,6 +128,22 @@ test('the default DATA source keeps deployed report, folder and asset paths at t
   assert.match(folder, /href="\/fsoverhead\/report"/);
   assert.match(root, /src="\/_assets\/browser.js"/);
   assert.doesNotMatch(root + folder, /(?:href|src)="\/DATA\//);
+  const css = root.match(/<style id="archive-styles">([\s\S]*?)<\/style>/)?.[1];
+  assert.ok(css, 'browser styles are available with the first HTML response');
+  assert.doesNotMatch(root + folder, /<link[^>]+rel="stylesheet"/);
+  assert.ok(gzipSync(css).length < 12_000, 'inlined CSS stays small enough for first paint');
+  assert.match(css, /\.fa-arrow-down/);
+  assert.match(css, /\.form-control/);
+  assert.match(css, /\.table-responsive/);
+  assert.match(css, /\.readme-body/);
+  assert.doesNotMatch(css, /\.carousel|\.accordion|\.modal/);
+  const fontUrls = [...new Set([...css.matchAll(/url\((\/_assets\/vendor-fonts\/[^)]+)\)/g)].map(match => match[1]))];
+  assert.ok(fontUrls.length > 0, 'icon fonts remain available without a third-party CSS request');
+  for (const url of fontUrls) {
+    const bytes = await readFile(path.join(outputDir, url.slice(1)));
+    const hash = createHash('sha256').update(bytes).digest('hex').slice(0, 12);
+    assert.ok(url.endsWith(`.${hash}.woff2`), 'font URL reflects its actual contents');
+  }
 });
 
 test('public sites inside DATA can have script folders and documentation files', async t => {

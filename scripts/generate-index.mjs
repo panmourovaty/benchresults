@@ -3,10 +3,12 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { renderReadme } from './render-readme.mjs';
 import { canonicalHtmlPath } from './page-url.mjs';
+import { buildBrowserStyles } from './browser-styles.mjs';
 
 export const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const dataRoot = path.join(projectRoot, 'DATA');
 const generatedMarker = '<meta name="generator" content="benchresults-directory-index">';
+const styleMarker = '<style id="archive-styles"></style>';
 const repository = 'https://github.com/panmourovaty/benchresults';
 const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
 
@@ -123,9 +125,7 @@ function documentStart(title, description) {
   <meta name="htmx-config" content='{"noSwap":[204,304,"4xx","5xx"],"preload":{"autoBoost":false}}'>
   <title>${escapeHtml(title)} · Pan Mourovaty's benchmarks</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css">
-  <link rel="stylesheet" href="/_assets/browser.css">
+  ${styleMarker}
   <script defer src="https://cdn.jsdelivr.net/npm/htmx.org@4.0.0/dist/htmx.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/htmx.org@4.0.0/dist/ext/hx-preload.js"></script>
   <script defer src="/_assets/browser.js"></script>
@@ -238,8 +238,9 @@ export async function generateDirectoryIndexes({ sourceDir = dataRoot, outputDir
       catch (error) { if (error.code !== 'ENOENT') throw error; }
     }
   }
+  const pages = [];
   for (const [relativeDir, directory] of directories) {
-    if (directory.generated) await writeFile(path.join(outputDir, relativeDir, 'index.html'), renderDirectory(relativeDir, directories));
+    if (directory.generated) pages.push({ file: path.join(outputDir, relativeDir, 'index.html'), html: renderDirectory(relativeDir, directories) });
   }
   const source404 = path.join(sourceDir, '404.html');
   let authored404;
@@ -248,7 +249,11 @@ export async function generateDirectoryIndexes({ sourceDir = dataRoot, outputDir
   if (authored404) {
     if (sourceDir !== outputDir) await cp(source404, path.join(outputDir, '404.html'), { preserveTimestamps: true });
   } else {
-    await writeFile(path.join(outputDir, '404.html'), `${documentStart('Page not found', 'This file or folder could not be found in the benchmark archive.')}<main id="directory-browser" class="container archive-container not-found"><p class="eyebrow">404 · Page not found</p><h1>This path is missing.</h1><p>The file or folder may have moved. Browse the archive to find the report you need.</p><a class="btn btn-primary" href="/"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back to the archive</a></main>${documentEnd()}`);
+    pages.push({ file: path.join(outputDir, '404.html'), html: `${documentStart('Page not found', 'This file or folder could not be found in the benchmark archive.')}<main id="directory-browser" class="container archive-container not-found"><p class="eyebrow">404 · Page not found</p><h1>This path is missing.</h1><p>The file or folder may have moved. Browse the archive to find the report you need.</p><a class="btn btn-primary" href="/"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back to the archive</a></main>${documentEnd()}` });
+  }
+  if (pages.length) {
+    const css = await buildBrowserStyles({ sourceDir, outputDir, pages: pages.map(page => page.html) });
+    for (const page of pages) await writeFile(page.file, page.html.replace(styleMarker, () => `<style id="archive-styles">${css}</style>`));
   }
   return { directories, outputDir };
 }
