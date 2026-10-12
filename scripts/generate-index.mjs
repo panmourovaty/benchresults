@@ -166,7 +166,7 @@ function renderDirectory(relativeDir, directories) {
     <section class="listing-panel" aria-label="Directory contents">
       <div class="listing-toolbar">
         <div class="location-label"><i class="fa-solid fa-folder-open" aria-hidden="true"></i><span>${escapeHtml(publicUrl(relativeDir, true))}</span></div>
-        <div class="search-field" data-enhanced hidden><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><label class="visually-hidden" for="file-search">Filter files in this folder</label><input class="form-control" type="search" id="file-search" placeholder="Filter files…" autocomplete="off" spellcheck="false" aria-controls="file-list"></div>
+        <div class="search-field" data-enhanced inert aria-hidden="true"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><label class="visually-hidden" for="file-search">Filter files in this folder</label><input class="form-control" type="search" id="file-search" placeholder="Filter files…" autocomplete="off" spellcheck="false" aria-controls="file-list"></div>
       </div>
       <div class="table-responsive">
         <table class="table align-middle file-table">

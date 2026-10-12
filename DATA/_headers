@@ -1,0 +1,7 @@
+# Use HTMX hover fetches rather than Cloudflare Speed Brain's speculative requests.
+# Speed Brain preserves an origin-provided Speculation-Rules header.
+/*
+  Speculation-Rules: "/_assets/speculation-rules.json"
+
+/_assets/speculation-rules.json
+  Content-Type: application/speculationrules+json

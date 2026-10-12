@@ -2,8 +2,6 @@
 
 (() => {
   const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
-  const prefetched = new Set();
-  const hoverTimers = new WeakMap();
   let mermaidReady;
   let diagramSequence = 0;
 
@@ -11,20 +9,23 @@
     const browser = document.getElementById('directory-browser');
     if (!browser || browser.dataset.initialized) return;
     browser.dataset.initialized = 'true';
-    browser.dataset.sort = 'name';
+    browser.dataset.sortKey = 'name';
     browser.dataset.direction = 'ascending';
-    browser.querySelectorAll('[data-enhanced]').forEach(element => { element.hidden = false; });
-    browser.querySelectorAll('[data-sort]').forEach(button => { button.disabled = false; });
+    browser.querySelectorAll('[data-enhanced]').forEach(element => {
+      element.removeAttribute('inert');
+      element.removeAttribute('aria-hidden');
+    });
+    browser.querySelectorAll('button[data-sort]').forEach(button => { button.disabled = false; });
     filterDirectory(browser);
-    initializeReadmePreloading(browser);
+    initializeDocumentPreloading(browser);
     renderReadmeDiagrams(browser);
   }
 
-  function initializeReadmePreloading(browser) {
+  function initializeDocumentPreloading(browser) {
     const connection = navigator.connection;
     if (!window.htmx || connection?.saveData || /(^|-)2g$/.test(connection?.effectiveType || '')) return;
     const directoryPath = browser.querySelector('.location-label span')?.textContent;
-    for (const link of browser.querySelectorAll('.readme-panel a[href]')) {
+    for (const link of browser.querySelectorAll('[data-prefetch-document], .readme-panel a[href]')) {
       const href = link.getAttribute('href');
       if (href.startsWith('#') || link.hasAttribute('download')) continue;
       let url;
@@ -34,7 +35,7 @@
       // Let HTMX's preload extension warm the HTTP cache without intercepting
       // clicks. The custom request trigger is never fired by browser navigation.
       link.setAttribute('hx-get', url.pathname + url.search);
-      link.setAttribute('hx-trigger', 'readme-prefetch-only');
+      link.setAttribute('hx-trigger', 'document-prefetch-only');
       link.setAttribute('hx-preload', 'mouseenter, focus, touchstart');
       link.setAttribute('hx-config', '{"cache":"force-cache"}');
       htmx.process(link);
@@ -108,13 +109,15 @@
       search.value = '';
       filterDirectory(browser);
       search.focus();
+      return;
     }
-    const button = event.target.closest('[data-sort]');
-    if (!button) return;
+    const button = event.target.closest('button[data-sort]');
+    if (!button || button.disabled) return;
     const browser = button.closest('#directory-browser');
+    if (!browser) return;
     const key = button.dataset.sort;
-    const direction = browser.dataset.sort === key && browser.dataset.direction === 'ascending' ? 'descending' : 'ascending';
-    browser.dataset.sort = key;
+    const direction = browser.dataset.sortKey === key && browser.dataset.direction === 'ascending' ? 'descending' : 'ascending';
+    browser.dataset.sortKey = key;
     browser.dataset.direction = direction;
     const rows = [...browser.querySelectorAll('[data-entry]')];
     rows.sort((left, right) => {
@@ -127,47 +130,32 @@
     const tbody = browser.querySelector('#file-list');
     const empty = browser.querySelector('[data-empty]');
     rows.forEach(row => tbody.insertBefore(row, empty));
-    browser.querySelectorAll('[data-sort]').forEach(sortButton => {
+    browser.querySelectorAll('button[data-sort]').forEach(sortButton => {
       const active = sortButton === button;
       sortButton.closest('th').setAttribute('aria-sort', active ? direction : 'none');
       sortButton.querySelector('i').className = `fa-solid ${active ? (direction === 'ascending' ? 'fa-arrow-up' : 'fa-arrow-down') : 'fa-sort'}`;
     });
   });
 
-  // Reports need their own CSS and scripts on a full document load. Directory
-  // links use HTMX's cache; reports use the browser's navigation prefetch cache.
-  function prefetchDocument(link) {
-    const connection = navigator.connection;
-    if (connection?.saveData || /(^|-)2g$/.test(connection?.effectiveType || '')) return;
-    if (prefetched.has(link.href)) return;
-    prefetched.add(link.href);
-    const hint = document.createElement('link');
-    hint.rel = 'prefetch';
-    hint.as = 'document';
-    hint.href = link.href;
-    document.head.append(hint);
-  }
-
-  document.addEventListener('pointerover', event => {
-    const link = event.target.closest('[data-prefetch-document]');
-    if (!link || link.contains(event.relatedTarget) || hoverTimers.has(link)) return;
-    hoverTimers.set(link, setTimeout(() => { hoverTimers.delete(link); prefetchDocument(link); }, 150));
-  });
-  document.addEventListener('pointerout', event => {
-    const link = event.target.closest('[data-prefetch-document]');
-    if (!link || link.contains(event.relatedTarget)) return;
-    clearTimeout(hoverTimers.get(link));
-    hoverTimers.delete(link);
-  });
-  document.addEventListener('focusin', event => {
-    if (event.target.matches('[data-prefetch-document]')) prefetchDocument(event.target);
-  });
-
   // Once HTMX consumes a preload, keep pointer events from immediately warming
   // the same link again while the outgoing directory is being replaced.
   document.addEventListener('htmx:before:request', event => {
-    const link = event.detail.ctx.sourceElement;
-    if (link.matches('a[hx-boost="true"]')) link.setAttribute('data-navigation-pending', '');
+    const { ctx } = event.detail;
+    const link = ctx.sourceElement;
+    if (!link.matches('a[hx-boost="true"]')) return;
+    link.setAttribute('data-navigation-pending', '');
+    // The preload extension may supply a rejected promise or an HTTP error.
+    // On a click, retry once with a fresh GET instead of reusing that response.
+    const fetchRequest = ctx.fetch;
+    ctx.fetch = async (url, options) => {
+      try {
+        const response = await fetchRequest(url, options);
+        if (response.ok) return response;
+      } catch (error) {
+        if (options.signal?.aborted) throw error;
+      }
+      return fetch(url, { ...options, cache: 'reload' });
+    };
   });
   document.addEventListener('htmx:finally:request', event => {
     event.detail.ctx.sourceElement.removeAttribute('data-navigation-pending');

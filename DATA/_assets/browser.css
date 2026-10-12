@@ -9,6 +9,7 @@
   --archive-border: #dce9f0;
   --bs-body-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
+html { scrollbar-gutter: stable; }
 body {
   margin: 0;
   min-height: 100vh;
@@ -18,6 +19,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 [hidden] { display: none !important; }
+/* Keep the toolbar's space while deferred JavaScript enables filtering. */
+[data-enhanced][inert] { visibility: hidden; }
+/* Icon glyphs can arrive later without changing their canvas or baseline. */
+:is(.fa-solid, .fa-brands) { display: inline-block; width: 1.25em; height: 1em; line-height: 1; flex-shrink: 0; vertical-align: -.125em; }
 a { color: var(--archive-accent); text-decoration: none; }
 a:hover { color: #295780; }
 button, input { font: inherit; }
